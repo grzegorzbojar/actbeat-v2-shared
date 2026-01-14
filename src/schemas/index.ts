@@ -1,0 +1,122 @@
+/**
+ * Zod validation schemas for the Actbeat theater management system.
+ * @module schemas
+ */
+
+// Event schemas
+export {
+  eventCategorySchema,
+  playEventMetadataSchema,
+  trialEventMetadataSchema,
+  eventMetadataSchema,
+  createEventSchema,
+  updateEventSchema,
+  eventQuerySchema,
+  type CreateEventSchemaInput,
+  type CreateEventSchemaOutput,
+  type UpdateEventSchemaInput,
+  type UpdateEventSchemaOutput,
+  type EventQuerySchemaInput,
+  type EventQuerySchemaOutput,
+} from './event.schema.js';
+
+// Play schemas
+export {
+  createPlaySchema,
+  updatePlaySchema,
+  playQuerySchema,
+  type CreatePlaySchemaInput,
+  type CreatePlaySchemaOutput,
+  type UpdatePlaySchemaInput,
+  type UpdatePlaySchemaOutput,
+  type PlayQuerySchemaInput,
+  type PlayQuerySchemaOutput,
+} from './play.schema.js';
+
+// Character schemas
+export {
+  createCharacterSchema,
+  updateCharacterSchema,
+  characterQuerySchema,
+  type CreateCharacterSchemaInput,
+  type CreateCharacterSchemaOutput,
+  type UpdateCharacterSchemaInput,
+  type UpdateCharacterSchemaOutput,
+  type CharacterQuerySchemaInput,
+  type CharacterQuerySchemaOutput,
+} from './character.schema.js';
+
+// Scene schemas
+export {
+  createSceneSchema,
+  updateSceneSchema,
+  sceneQuerySchema,
+  type CreateSceneSchemaInput,
+  type CreateSceneSchemaOutput,
+  type UpdateSceneSchemaInput,
+  type UpdateSceneSchemaOutput,
+  type SceneQuerySchemaInput,
+  type SceneQuerySchemaOutput,
+} from './scene.schema.js';
+
+// Location schemas
+export {
+  createLocationSchema,
+  updateLocationSchema,
+  locationQuerySchema,
+  type CreateLocationSchemaInput,
+  type CreateLocationSchemaOutput,
+  type UpdateLocationSchemaInput,
+  type UpdateLocationSchemaOutput,
+  type LocationQuerySchemaInput,
+  type LocationQuerySchemaOutput,
+} from './location.schema.js';
+
+// Tag schemas
+export {
+  createTagSchema,
+  updateTagSchema,
+  tagQuerySchema,
+  type CreateTagSchemaInput,
+  type CreateTagSchemaOutput,
+  type UpdateTagSchemaInput,
+  type UpdateTagSchemaOutput,
+  type TagQuerySchemaInput,
+  type TagQuerySchemaOutput,
+} from './tag.schema.js';
+
+// Search schemas
+export {
+  dateRangeSchema,
+  searchPlayAvailabilitySchema,
+  searchSceneAvailabilitySchema,
+  searchPlaysSchema,
+  searchScenesSchema,
+  batchSearchSchema,
+  type DateRangeSchemaInput,
+  type DateRangeSchemaOutput,
+  type SearchPlayAvailabilitySchemaInput,
+  type SearchPlayAvailabilitySchemaOutput,
+  type SearchSceneAvailabilitySchemaInput,
+  type SearchSceneAvailabilitySchemaOutput,
+  type SearchPlaysSchemaInput,
+  type SearchPlaysSchemaOutput,
+  type SearchScenesSchemaInput,
+  type SearchScenesSchemaOutput,
+  type BatchSearchSchemaInput,
+  type BatchSearchSchemaOutput,
+} from './search.schema.js';
+
+// Common schemas
+export {
+  paginationSchema,
+  idParamSchema,
+  hexColorSchema,
+  idArraySchema,
+  dateSchema,
+  optionalDateSchema,
+  type PaginationSchemaInput,
+  type PaginationSchemaOutput,
+  type IdParamSchemaInput,
+  type IdParamSchemaOutput,
+} from './common.schema.js';
