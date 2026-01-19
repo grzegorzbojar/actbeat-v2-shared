@@ -20,6 +20,7 @@ export const createPlaySchema = z.object({
     .string()
     .regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid hex color')
     .nullish(),
+  defaultLocationId: z.string().optional().nullable(),
   tagIds: z.array(z.string()).default([]),
 });
 
@@ -38,6 +39,7 @@ export const updatePlaySchema = z.object({
     .string()
     .regex(/^#[0-9A-Fa-f]{6}$/, 'Invalid hex color')
     .nullish(),
+  defaultLocationId: z.string().optional().nullable(),
   tagIds: z.array(z.string()).optional(),
 });
 

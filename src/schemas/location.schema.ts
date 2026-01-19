@@ -6,14 +6,19 @@
 import { z } from 'zod';
 
 /**
+ * Coordinate validation helpers.
+ */
+const latitudeSchema = z.number().min(-90, 'Latitude must be between -90 and 90').max(90, 'Latitude must be between -90 and 90');
+const longitudeSchema = z.number().min(-180, 'Longitude must be between -180 and 180').max(180, 'Longitude must be between -180 and 180');
+
+/**
  * Schema for creating a new location.
  */
 export const createLocationSchema = z.object({
-  name: z.string().max(255).nullish(),
-  address: z.string().max(500).nullish(),
-  latitude: z.number().min(-90).max(90).nullish(),
-  longitude: z.number().min(-180).max(180).nullish(),
-  orgId: z.string().min(1, 'Organization ID is required'),
+  name: z.string().min(1, 'Name is required').max(200, 'Name is too long'),
+  address: z.string().max(500, 'Address is too long').optional().nullable(),
+  latitude: latitudeSchema.optional().nullable(),
+  longitude: longitudeSchema.optional().nullable(),
 }).refine(
   (data) => {
     // If one coordinate is provided, the other must be too
@@ -25,14 +30,20 @@ export const createLocationSchema = z.object({
 );
 
 /**
- * Schema for updating an existing location.
+ * Base schema for update location (without refinement).
  */
-export const updateLocationSchema = z.object({
-  name: z.string().max(255).nullish(),
-  address: z.string().max(500).nullish(),
-  latitude: z.number().min(-90).max(90).nullish(),
-  longitude: z.number().min(-180).max(180).nullish(),
-}).refine(
+const updateLocationBaseSchema = z.object({
+  name: z.string().min(1, 'Name is required').max(200, 'Name is too long').optional(),
+  address: z.string().max(500, 'Address is too long').optional().nullable(),
+  latitude: latitudeSchema.optional().nullable(),
+  longitude: longitudeSchema.optional().nullable(),
+});
+
+/**
+ * Schema for updating an existing location.
+ * All fields are optional.
+ */
+export const updateLocationSchema = updateLocationBaseSchema.refine(
   (data) => {
     // If one coordinate is provided, the other must be too
     const hasLat = data.latitude !== undefined;
@@ -55,7 +66,8 @@ export const updateLocationSchema = z.object({
  * Schema for location query parameters.
  */
 export const locationQuerySchema = z.object({
-  orgId: z.string().optional(),
+  page: z.coerce.number().int().positive().default(1),
+  limit: z.coerce.number().int().positive().max(100).default(25),
   search: z.string().max(100).optional(),
 });
 

@@ -23,6 +23,8 @@ export interface Play {
   duration: number;
   /** Optional hex color code for display */
   color: string | null;
+  /** Default location ID for this play's events */
+  defaultLocationId: string | null;
   /** Creation timestamp */
   createdAt: Date;
   /** Last update timestamp */
@@ -39,6 +41,8 @@ export interface PlayWithRelations extends Play {
   scenes: Scene[];
   /** Associated tags */
   tags: Tag[];
+  /** Default location for this play's events */
+  defaultLocation: { id: string; name: string | null; address: string | null; latitude: number | null; longitude: number | null } | null;
 }
 
 /**
@@ -54,6 +58,8 @@ export interface CreatePlayInput {
   duration: number;
   /** Optional hex color code for display */
   color?: string | null;
+  /** Default location ID for this play's events */
+  defaultLocationId?: string | null;
   /** Array of tag IDs to associate */
   tagIds?: string[];
 }
@@ -69,6 +75,8 @@ export interface UpdatePlayInput {
   duration?: number;
   /** Optional hex color code for display */
   color?: string | null;
+  /** Default location ID for this play's events */
+  defaultLocationId?: string | null;
   /** Array of tag IDs to associate */
   tagIds?: string[];
 }
@@ -100,6 +108,8 @@ export interface PlayResponse {
   duration: number;
   /** Optional hex color code for display */
   color: string | null;
+  /** Default location ID for this play's events */
+  defaultLocationId: string | null;
   /** Creation timestamp as ISO string */
   createdAt: string;
   /** Last update timestamp as ISO string */
@@ -116,6 +126,8 @@ export interface PlayResponseWithRelations extends PlayResponse {
   scenes: Scene[];
   /** Associated tags */
   tags: Tag[];
+  /** Default location for this play's events */
+  defaultLocation: { id: string; name: string | null; address: string | null; latitude: number | null; longitude: number | null } | null;
 }
 
 /**

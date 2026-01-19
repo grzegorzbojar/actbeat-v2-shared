@@ -56,10 +56,12 @@ export {
 // Location types
 export {
   type Location,
+  type LocationWithRelations,
   type CreateLocationInput,
   type UpdateLocationInput,
   type LocationQueryParams,
   type LocationResponse,
+  type LocationResponseWithRelations,
   type GeoCoordinates,
 } from './location.types.js';
 
