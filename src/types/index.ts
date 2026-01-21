@@ -6,6 +6,13 @@
 // Event types
 export {
   EventCategory,
+  EventStatus,
+  PrivateEventStatus,
+  ParticipantStatus,
+  AvailabilityStatus,
+  RehearsalType,
+  HealthcheckSeverity,
+  HealthcheckIssueType,
   type Event,
   type EventWithRelations,
   type CreateEventInput,
@@ -16,6 +23,20 @@ export {
   type EventMetadata,
   type PlayEventMetadata,
   type TrialEventMetadata,
+  type ExternalPerson,
+  type CharacterAssignment,
+  type CrewAssignment,
+  type EventParticipant,
+  type EventParticipantResponse,
+  type CreateEventParticipantInput,
+  type UpdateParticipantStatusInput,
+  type HealthcheckIssue,
+  type ActorConflict,
+  type LocationConflict,
+  type HealthcheckResult,
+  type AvailabilityBlock,
+  type AvailabilityCheckResult,
+  type BulkAvailabilityResult,
 } from './event.types.js';
 
 // Play types
@@ -107,6 +128,7 @@ export {
   type ApiError,
   type ApiResult,
   type PaginatedResponse,
+  type PaginatedResponseMeta,
   type PaginationParams,
   type SortParams,
   type DateRangeFilter,
@@ -132,4 +154,12 @@ export {
   type BatchSearchRequest,
   type BatchSearchResult,
 } from './search.types.js';
+
+// User preferences types
+export {
+  type UserPreferences,
+  type UserPreferencesResponse,
+  type UpdateUserPreferencesInput,
+  type GoogleCalendarInfo,
+} from './userPreferences.types.js';
 

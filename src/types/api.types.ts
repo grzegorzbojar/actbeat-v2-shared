@@ -61,6 +61,27 @@ export interface PaginatedResponse<T> {
 }
 
 /**
+ * Paginated response with meta object wrapper.
+ * Used by v2-backend services for list endpoints.
+ * @template T - The type of items in the data array
+ */
+export interface PaginatedResponseMeta<T> {
+  /** Array of items for current page */
+  data: T[];
+  /** Pagination metadata */
+  meta: {
+    /** Total number of items across all pages */
+    totalCount: number;
+    /** Current page number (1-indexed) */
+    page: number;
+    /** Number of items per page */
+    pageSize: number;
+    /** Total number of pages */
+    totalPages: number;
+  };
+}
+
+/**
  * Pagination query parameters.
  */
 export interface PaginationParams {

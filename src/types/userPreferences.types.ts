@@ -1,0 +1,63 @@
+/**
+ * User preferences types for the Actbeat theater management system.
+ * Manages user-specific settings like Google Calendar integration.
+ * @module types/userPreferences
+ */
+
+/**
+ * User preferences entity from the database.
+ * Stores user-specific configuration and settings.
+ */
+export interface UserPreferences {
+  /** Database primary key */
+  id: string;
+  /** Clerk user ID (foreign key) */
+  clerkId: string;
+  /** User's email address */
+  email: string;
+  /** Whether Google Calendar sync is enabled for this user */
+  googleCalendarEnabled: boolean;
+  /** When the preferences record was created */
+  createdAt: Date;
+  /** When the preferences were last updated */
+  updatedAt: Date;
+}
+
+/**
+ * User preferences response DTO for API responses.
+ * Dates are serialized as ISO strings for JSON transport.
+ */
+export interface UserPreferencesResponse {
+  /** Database primary key */
+  id: string;
+  /** Clerk user ID */
+  clerkId: string;
+  /** User's email address */
+  email: string;
+  /** Whether Google Calendar sync is enabled for this user */
+  googleCalendarEnabled: boolean;
+  /** When the preferences record was created (ISO string) */
+  createdAt: string;
+  /** When the preferences were last updated (ISO string) */
+  updatedAt: string;
+}
+
+/**
+ * Input for updating user preferences.
+ * All fields are optional - only provided fields will be updated.
+ */
+export interface UpdateUserPreferencesInput {
+  /** Enable or disable Google Calendar sync */
+  googleCalendarEnabled?: boolean;
+}
+
+/**
+ * Information about Google Calendar integration status.
+ * Used to display connection info to users.
+ */
+export interface GoogleCalendarInfo {
+  /** Service account email that events will be shared with */
+  serviceAccountEmail: string;
+  /** Whether the integration is currently enabled for this user */
+  enabled: boolean;
+}

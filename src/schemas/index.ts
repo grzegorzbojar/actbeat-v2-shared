@@ -6,18 +6,41 @@
 // Event schemas
 export {
   eventCategorySchema,
+  eventStatusSchema,
+  privateEventStatusSchema,
+  participantStatusSchema,
+  availabilityStatusSchema,
+  rehearsalTypeSchema,
+  externalPersonSchema,
+  characterAssignmentSchema,
+  crewAssignmentSchema,
   playEventMetadataSchema,
   trialEventMetadataSchema,
   eventMetadataSchema,
   createEventSchema,
   updateEventSchema,
   eventQuerySchema,
+  createEventParticipantSchema,
+  updateParticipantStatusSchema,
+  bulkUpdateParticipantsSchema,
   type CreateEventSchemaInput,
   type CreateEventSchemaOutput,
   type UpdateEventSchemaInput,
   type UpdateEventSchemaOutput,
   type EventQuerySchemaInput,
   type EventQuerySchemaOutput,
+  type CreateEventParticipantSchemaInput,
+  type CreateEventParticipantSchemaOutput,
+  type UpdateParticipantStatusSchemaInput,
+  type UpdateParticipantStatusSchemaOutput,
+  type BulkUpdateParticipantsSchemaInput,
+  type BulkUpdateParticipantsSchemaOutput,
+  type CharacterAssignmentSchemaInput,
+  type CharacterAssignmentSchemaOutput,
+  type CrewAssignmentSchemaInput,
+  type CrewAssignmentSchemaOutput,
+  type ExternalPersonSchemaInput,
+  type ExternalPersonSchemaOutput,
 } from './event.schema.js';
 
 // Play schemas
@@ -120,3 +143,10 @@ export {
   type IdParamSchemaInput,
   type IdParamSchemaOutput,
 } from './common.schema.js';
+
+// User preferences schemas
+export {
+  updateUserPreferencesSchema,
+  type UpdateUserPreferencesSchemaInput,
+  type UpdateUserPreferencesSchemaOutput,
+} from './userPreferences.schema.js';

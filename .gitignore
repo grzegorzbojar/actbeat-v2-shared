@@ -6,10 +6,10 @@ dist/
 build/
 *.tsbuildinfo
 
-# Environment
+# Environment - exclude ALL .env files except .env.example
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
 # IDE
 .idea/

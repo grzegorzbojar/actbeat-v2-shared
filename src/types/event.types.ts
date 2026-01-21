@@ -6,6 +6,7 @@
 
 import type { Location } from './location.types.js';
 import type { Tag } from './tag.types.js';
+import type { TimeBlock } from './search.types.js';
 
 /**
  * Event category enumeration matching Prisma schema.
@@ -23,6 +24,120 @@ export enum EventCategory {
 }
 
 /**
+ * Workflow status for organization events (PLAY, TRIAL, TECHNICAL).
+ * Controls visibility and invitation workflow.
+ */
+export enum EventStatus {
+  /** Working version, not visible to participants */
+  DRAFT = 'DRAFT',
+  /** Invitations sent, awaiting responses */
+  PLANNED = 'PLANNED',
+  /** All required participants accepted */
+  SCHEDULED = 'SCHEDULED',
+  /** Event completed, for statistics */
+  COMPLETED = 'COMPLETED',
+  /** Event cancelled */
+  CANCELLED = 'CANCELLED',
+}
+
+/**
+ * Status for PRIVATE events only.
+ * Affects availability calculation.
+ */
+export enum PrivateEventStatus {
+  /** Confirmed personal event - marks time as BUSY */
+  CONFIRMED = 'CONFIRMED',
+  /** Tentative personal event - marks time as TENTATIVE */
+  TENTATIVE = 'TENTATIVE',
+}
+
+/**
+ * Response status for event participants.
+ */
+export enum ParticipantStatus {
+  /** Invitation sent, no response yet */
+  PENDING = 'PENDING',
+  /** Participant accepted the invitation */
+  ACCEPTED = 'ACCEPTED',
+  /** Participant declined the invitation */
+  DECLINED = 'DECLINED',
+}
+
+/**
+ * Availability status for a time period.
+ */
+export enum AvailabilityStatus {
+  /** No events blocking this time */
+  FREE = 'FREE',
+  /** Has tentative PRIVATE or unaccepted PLANNED org event */
+  TENTATIVE = 'TENTATIVE',
+  /** Has confirmed PRIVATE or accepted org event */
+  BUSY = 'BUSY',
+}
+
+/**
+ * Rehearsal type for play events.
+ */
+export enum RehearsalType {
+  /** Full run-through of the play */
+  FULL_RUN = 'FULL_RUN',
+  /** Working on specific scenes */
+  SCENE_WORK = 'SCENE_WORK',
+  /** Technical rehearsal (lights, sound, etc.) */
+  TECHNICAL = 'TECHNICAL',
+  /** Dress rehearsal */
+  DRESS_REHEARSAL = 'DRESS_REHEARSAL',
+}
+
+/**
+ * External person information for guests without Clerk accounts.
+ */
+export interface ExternalPerson {
+  /** Name of the external person */
+  name: string;
+  /** Contact information (phone, etc.) */
+  contact?: string;
+  /** Email address */
+  email?: string;
+}
+
+/**
+ * Character assignment in PlayEventMetadata.
+ * Maps a character to an actor (internal or external).
+ */
+export interface CharacterAssignment {
+  /** ID of the character being played */
+  characterId: string;
+  /** Clerk user ID if internal actor */
+  userId: string | null;
+  /** External actor info if not a Clerk user */
+  externalActor?: ExternalPerson;
+  /** Invitation/response status */
+  status?: ParticipantStatus;
+  /** Notes about this assignment */
+  notes?: string;
+}
+
+/**
+ * Crew role assignment in PlayEventMetadata.
+ * Maps a crew role to a person (internal or external).
+ */
+export interface CrewAssignment {
+  /** ID of the role definition (from UserTag or similar) */
+  roleDefinitionId: string;
+  /** Human-readable role name */
+  roleName: string;
+  /** Clerk user ID if internal crew member */
+  userId: string | null;
+  /** External person info if not a Clerk user */
+  externalPerson?: ExternalPerson;
+  /** Invitation/response status */
+  status?: ParticipantStatus;
+  /** Notes about this assignment */
+  notes?: string;
+}
+
+/**
  * Event metadata for PLAY category events.
  * Stores play-specific information like scene and character assignments.
  */
@@ -31,7 +146,15 @@ export interface PlayEventMetadata {
   playId: string;
   /** IDs of scenes being rehearsed */
   sceneIds?: string[];
-  /** IDs of characters involved */
+  /** Character assignments with actor mappings */
+  characterAssignments: CharacterAssignment[];
+  /** Crew role assignments */
+  crewAssignments: CrewAssignment[];
+  /** Type of rehearsal */
+  rehearsalType?: RehearsalType;
+  /** Special requirements for this event */
+  specialRequirements?: string[];
+  /** @deprecated Use characterAssignments instead */
   characterIds?: string[];
 }
 
@@ -78,8 +201,60 @@ export interface Event {
   parentId: string | null;
   /** Category-specific metadata stored as JSON */
   metadata: EventMetadata | null;
-  /** Array of participant user IDs (from Clerk) */
+  /** Array of participant user IDs (from Clerk) - legacy field */
   participants: string[];
+  /** Workflow status for org events (PLAY, TRIAL, TECHNICAL) */
+  status: EventStatus | null;
+  /** Status for PRIVATE events (CONFIRMED or TENTATIVE) */
+  privateStatus: PrivateEventStatus | null;
+  /** Direct play reference for PLAY events */
+  playId: string | null;
+  /** Admin notes for overriding healthcheck warnings */
+  adminNotes: string | null;
+  /** Minimum notice period in hours */
+  minimumNoticePeriod: number | null;
+  /** Google Calendar event ID */
+  googleEventId: string | null;
+  /** Google Calendar ID */
+  googleCalendarId: string | null;
+  /** Creation timestamp */
+  createdAt: Date;
+  /** Last update timestamp */
+  updatedAt: Date;
+}
+
+/**
+ * Event participant record matching Prisma EventParticipant model.
+ */
+export interface EventParticipant {
+  /** Unique identifier */
+  id: string;
+  /** ID of the event */
+  eventId: string;
+  /** Clerk user ID for internal participants */
+  userId: string | null;
+  /** External participant name */
+  externalName: string | null;
+  /** External participant contact info */
+  externalContact: string | null;
+  /** External participant email */
+  externalEmail: string | null;
+  /** Invitation response status */
+  status: ParticipantStatus;
+  /** When the participant responded */
+  responseAt: Date | null;
+  /** Role (actor, director, crew, etc.) */
+  role: string | null;
+  /** Character ID if role is actor */
+  characterId: string | null;
+  /** Whether this participant is required for the event */
+  isRequired: boolean;
+  /** Whether conflicts were overridden for this participant */
+  conflictOverride: boolean;
+  /** Reason for conflict override */
+  overrideReason: string | null;
+  /** Google Calendar event ID for this participant */
+  googleEventId: string | null;
   /** Creation timestamp */
   createdAt: Date;
   /** Last update timestamp */
@@ -98,6 +273,8 @@ export interface EventWithRelations extends Event {
   children: Event[];
   /** Parent event if this is a child */
   parent: Event | null;
+  /** Detailed participant records */
+  participantRecords: EventParticipant[];
 }
 
 /**
@@ -129,6 +306,16 @@ export interface CreateEventInput {
   participants?: string[];
   /** Array of tag IDs to associate */
   tagIds?: string[];
+  /** Workflow status for org events */
+  status?: EventStatus | null;
+  /** Status for PRIVATE events */
+  privateStatus?: PrivateEventStatus | null;
+  /** Direct play reference for PLAY events */
+  playId?: string | null;
+  /** Admin notes for overriding warnings */
+  adminNotes?: string | null;
+  /** Minimum notice period in hours */
+  minimumNoticePeriod?: number | null;
 }
 
 /**
@@ -160,6 +347,16 @@ export interface UpdateEventInput {
   participants?: string[];
   /** Array of tag IDs to associate */
   tagIds?: string[];
+  /** Workflow status for org events */
+  status?: EventStatus | null;
+  /** Status for PRIVATE events */
+  privateStatus?: PrivateEventStatus | null;
+  /** Direct play reference for PLAY events */
+  playId?: string | null;
+  /** Admin notes for overriding warnings */
+  adminNotes?: string | null;
+  /** Minimum notice period in hours */
+  minimumNoticePeriod?: number | null;
 }
 
 /**
@@ -184,6 +381,12 @@ export interface EventQueryParams {
   tagIds?: string[];
   /** Include child events in results */
   includeChildren?: boolean;
+  /** Filter by workflow status */
+  status?: EventStatus;
+  /** Filter by play ID */
+  playId?: string;
+  /** Include participant records in response */
+  includeParticipants?: boolean;
 }
 
 /**
@@ -215,9 +418,61 @@ export interface EventResponse {
   metadata: EventMetadata | null;
   /** Array of participant user IDs */
   participants: string[];
+  /** Workflow status for org events */
+  status: EventStatus | null;
+  /** Status for PRIVATE events */
+  privateStatus: PrivateEventStatus | null;
+  /** Direct play ID */
+  playId: string | null;
+  /** Admin notes */
+  adminNotes: string | null;
+  /** Minimum notice period in hours */
+  minimumNoticePeriod: number | null;
+  /** Google Calendar event ID */
+  googleEventId: string | null;
+  /** Google Calendar ID */
+  googleCalendarId: string | null;
   /** Creation timestamp as ISO string */
   createdAt: string;
   /** Last update timestamp as ISO string */
+  updatedAt: string;
+}
+
+/**
+ * Event participant response for API.
+ */
+export interface EventParticipantResponse {
+  /** Unique identifier */
+  id: string;
+  /** Event ID */
+  eventId: string;
+  /** Clerk user ID */
+  userId: string | null;
+  /** External participant name */
+  externalName: string | null;
+  /** External participant contact */
+  externalContact: string | null;
+  /** External participant email */
+  externalEmail: string | null;
+  /** Response status */
+  status: ParticipantStatus;
+  /** When responded (ISO string) */
+  responseAt: string | null;
+  /** Role */
+  role: string | null;
+  /** Character ID */
+  characterId: string | null;
+  /** Is required */
+  isRequired: boolean;
+  /** Conflict override */
+  conflictOverride: boolean;
+  /** Override reason */
+  overrideReason: string | null;
+  /** Google event ID */
+  googleEventId: string | null;
+  /** Created at (ISO string) */
+  createdAt: string;
+  /** Updated at (ISO string) */
   updatedAt: string;
 }
 
@@ -229,4 +484,216 @@ export interface EventResponseWithRelations extends EventResponse {
   location: Location | null;
   /** Associated tags */
   tags: Tag[];
+  /** Participant records */
+  participantRecords?: EventParticipantResponse[];
+}
+
+// =============================================================================
+// Healthcheck Types
+// =============================================================================
+
+/**
+ * Severity level for healthcheck issues.
+ */
+export enum HealthcheckSeverity {
+  /** Informational - does not block publishing */
+  INFO = 'INFO',
+  /** Warning - can be overridden with admin notes */
+  WARNING = 'WARNING',
+  /** Error - blocks publishing, must be resolved */
+  ERROR = 'ERROR',
+}
+
+/**
+ * Type of healthcheck issue.
+ */
+export enum HealthcheckIssueType {
+  /** Actor has a scheduling conflict */
+  ACTOR_CONFLICT = 'ACTOR_CONFLICT',
+  /** Character has no actor assigned */
+  UNASSIGNED_CHARACTER = 'UNASSIGNED_CHARACTER',
+  /** Required crew role not filled */
+  UNFILLED_CREW_ROLE = 'UNFILLED_CREW_ROLE',
+  /** Location has a conflict */
+  LOCATION_CONFLICT = 'LOCATION_CONFLICT',
+  /** Notice period not met */
+  NOTICE_PERIOD = 'NOTICE_PERIOD',
+  /** Conflict with another play event (even draft) */
+  PLAY_EVENT_CONFLICT = 'PLAY_EVENT_CONFLICT',
+  /** General warning */
+  GENERAL = 'GENERAL',
+}
+
+/**
+ * A single healthcheck issue.
+ */
+export interface HealthcheckIssue {
+  /** Type of issue */
+  type: HealthcheckIssueType;
+  /** Severity level */
+  severity: HealthcheckSeverity;
+  /** Human-readable message */
+  message: string;
+  /** Related entity ID (actor, character, location, etc.) */
+  entityId?: string;
+  /** Related entity name for display */
+  entityName?: string;
+  /** Additional context */
+  details?: Record<string, unknown>;
+}
+
+/**
+ * Actor conflict details.
+ */
+export interface ActorConflict {
+  /** Clerk user ID of the actor */
+  userId: string;
+  /** Actor name for display */
+  actorName: string;
+  /** Character they're assigned to */
+  characterId: string;
+  /** Character name */
+  characterName: string;
+  /** Conflicting event ID */
+  conflictingEventId: string;
+  /** Conflicting event title */
+  conflictingEventTitle: string;
+  /** Start of conflict */
+  conflictStart: Date;
+  /** End of conflict */
+  conflictEnd: Date;
+  /** Type of conflicting event */
+  conflictType: 'PRIVATE' | 'ORG_EVENT';
+}
+
+/**
+ * Location conflict details.
+ */
+export interface LocationConflict {
+  /** Location ID */
+  locationId: string;
+  /** Location name */
+  locationName: string;
+  /** Conflicting event ID */
+  conflictingEventId: string;
+  /** Conflicting event title */
+  conflictingEventTitle: string;
+  /** Start of conflict */
+  conflictStart: Date;
+  /** End of conflict */
+  conflictEnd: Date;
+}
+
+/**
+ * Result of healthcheck validation before publishing.
+ */
+export interface HealthcheckResult {
+  /** Whether the event can be published */
+  canPublish: boolean;
+  /** Whether there are warnings (but still publishable) */
+  hasWarnings: boolean;
+  /** All issues found */
+  issues: HealthcheckIssue[];
+  /** Detailed actor conflicts */
+  actorConflicts: ActorConflict[];
+  /** Character IDs without actors assigned */
+  unassignedCharacters: string[];
+  /** Crew role IDs not filled */
+  unfilledCrewRoles: string[];
+  /** Location conflict if any */
+  locationConflict?: LocationConflict;
+  /** Whether minimum notice period is met */
+  noticePeriodMet: boolean;
+  /** Hours until event starts */
+  hoursUntilEvent: number;
+  /** Required notice period in hours */
+  requiredNoticePeriod: number;
+}
+
+// =============================================================================
+// Availability Types
+// =============================================================================
+
+// TimeBlock is imported from search.types.ts to avoid duplication
+
+/**
+ * An availability block with status.
+ */
+export interface AvailabilityBlock extends TimeBlock {
+  /** Availability status for this block */
+  status: AvailabilityStatus;
+  /** Event causing this availability status (if any) */
+  eventId?: string;
+  /** Event title for display */
+  eventTitle?: string;
+}
+
+/**
+ * Result of checking a user's availability for a time period.
+ */
+export interface AvailabilityCheckResult {
+  /** Clerk user ID */
+  userId: string;
+  /** Overall status for the queried period */
+  overallStatus: AvailabilityStatus;
+  /** All availability blocks in the period */
+  blocks: AvailabilityBlock[];
+  /** Free time blocks within the period */
+  freeBlocks: TimeBlock[];
+  /** Total free minutes in the period */
+  totalFreeMinutes: number;
+}
+
+/**
+ * Bulk availability check result for multiple users.
+ */
+export interface BulkAvailabilityResult {
+  /** Start of the queried period */
+  periodStart: Date;
+  /** End of the queried period */
+  periodEnd: Date;
+  /** Availability results per user */
+  userAvailability: AvailabilityCheckResult[];
+  /** Users who are free for the entire period */
+  fullyAvailableUserIds: string[];
+  /** Users who have some availability */
+  partiallyAvailableUserIds: string[];
+  /** Users who are completely unavailable */
+  unavailableUserIds: string[];
+}
+
+// =============================================================================
+// Input Types for Participant Management
+// =============================================================================
+
+/**
+ * Input for creating an event participant.
+ */
+export interface CreateEventParticipantInput {
+  /** Clerk user ID for internal participants */
+  userId?: string | null;
+  /** External participant name */
+  externalName?: string | null;
+  /** External participant contact */
+  externalContact?: string | null;
+  /** External participant email */
+  externalEmail?: string | null;
+  /** Role */
+  role?: string | null;
+  /** Character ID if actor */
+  characterId?: string | null;
+  /** Is required */
+  isRequired?: boolean;
+}
+
+/**
+ * Input for updating participant status (responding to invitation).
+ */
+export interface UpdateParticipantStatusInput {
+  /** New status */
+  status: ParticipantStatus;
+  /** Override conflicts (requires admin permission) */
+  conflictOverride?: boolean;
+  /** Reason for override */
+  overrideReason?: string;
 }

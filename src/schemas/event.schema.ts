@@ -4,7 +4,14 @@
  */
 
 import { z } from 'zod';
-import { EventCategory } from '../types/event.types.js';
+import {
+  EventCategory,
+  EventStatus,
+  PrivateEventStatus,
+  ParticipantStatus,
+  AvailabilityStatus,
+  RehearsalType,
+} from '../types/event.types.js';
 
 /**
  * Event category enum schema.
@@ -12,11 +19,73 @@ import { EventCategory } from '../types/event.types.js';
 export const eventCategorySchema = z.nativeEnum(EventCategory);
 
 /**
+ * Event status enum schema for workflow states.
+ */
+export const eventStatusSchema = z.nativeEnum(EventStatus);
+
+/**
+ * Private event status enum schema.
+ */
+export const privateEventStatusSchema = z.nativeEnum(PrivateEventStatus);
+
+/**
+ * Participant status enum schema.
+ */
+export const participantStatusSchema = z.nativeEnum(ParticipantStatus);
+
+/**
+ * Availability status enum schema.
+ */
+export const availabilityStatusSchema = z.nativeEnum(AvailabilityStatus);
+
+/**
+ * Rehearsal type enum schema.
+ */
+export const rehearsalTypeSchema = z.nativeEnum(RehearsalType);
+
+/**
+ * External person schema for guests without Clerk accounts.
+ */
+export const externalPersonSchema = z.object({
+  name: z.string().min(1),
+  contact: z.string().optional(),
+  email: z.string().email().optional(),
+});
+
+/**
+ * Character assignment schema for play events.
+ */
+export const characterAssignmentSchema = z.object({
+  characterId: z.string().min(1),
+  userId: z.string().nullable(),
+  externalActor: externalPersonSchema.optional(),
+  status: participantStatusSchema.optional(),
+  notes: z.string().optional(),
+});
+
+/**
+ * Crew assignment schema for play events.
+ */
+export const crewAssignmentSchema = z.object({
+  roleDefinitionId: z.string().min(1),
+  roleName: z.string().min(1),
+  userId: z.string().nullable(),
+  externalPerson: externalPersonSchema.optional(),
+  status: participantStatusSchema.optional(),
+  notes: z.string().optional(),
+});
+
+/**
  * Play event metadata schema.
  */
 export const playEventMetadataSchema = z.object({
   playId: z.string().min(1),
   sceneIds: z.array(z.string()).optional(),
+  characterAssignments: z.array(characterAssignmentSchema).default([]),
+  crewAssignments: z.array(crewAssignmentSchema).default([]),
+  rehearsalType: rehearsalTypeSchema.optional(),
+  specialRequirements: z.array(z.string()).optional(),
+  // Deprecated - use characterAssignments instead
   characterIds: z.array(z.string()).optional(),
 });
 
@@ -56,6 +125,12 @@ export const createEventSchema = z.object({
   metadata: eventMetadataSchema.nullish(),
   participants: z.array(z.string()).default([]),
   tagIds: z.array(z.string()).default([]),
+  // New fields for workflow and status
+  status: eventStatusSchema.nullish(),
+  privateStatus: privateEventStatusSchema.nullish(),
+  playId: z.string().nullish(),
+  adminNotes: z.string().max(2000).nullish(),
+  minimumNoticePeriod: z.number().int().min(0).nullish(),
 }).refine(
   (data) => data.endDate > data.startDate,
   { message: 'End date must be after start date', path: ['endDate'] }
@@ -80,6 +155,12 @@ export const updateEventSchema = z.object({
   metadata: eventMetadataSchema.nullish(),
   participants: z.array(z.string()).optional(),
   tagIds: z.array(z.string()).optional(),
+  // New fields for workflow and status
+  status: eventStatusSchema.nullish(),
+  privateStatus: privateEventStatusSchema.nullish(),
+  playId: z.string().nullish(),
+  adminNotes: z.string().max(2000).nullish(),
+  minimumNoticePeriod: z.number().int().min(0).nullish(),
 }).refine(
   (data) => {
     if (data.startDate && data.endDate) {
@@ -106,6 +187,47 @@ export const eventQuerySchema = z.object({
     return val;
   }),
   includeChildren: z.coerce.boolean().default(false),
+  // New filters
+  status: eventStatusSchema.optional(),
+  playId: z.string().optional(),
+  includeParticipants: z.coerce.boolean().default(false),
+});
+
+// =============================================================================
+// Event Participant Schemas
+// =============================================================================
+
+/**
+ * Schema for creating an event participant.
+ */
+export const createEventParticipantSchema = z.object({
+  userId: z.string().nullish(),
+  externalName: z.string().max(255).nullish(),
+  externalContact: z.string().max(255).nullish(),
+  externalEmail: z.string().email().nullish(),
+  role: z.string().max(100).nullish(),
+  characterId: z.string().nullish(),
+  isRequired: z.boolean().default(true),
+}).refine(
+  (data) => data.userId || data.externalName,
+  { message: 'Either userId or externalName must be provided' }
+);
+
+/**
+ * Schema for updating participant status (responding to invitation).
+ */
+export const updateParticipantStatusSchema = z.object({
+  status: participantStatusSchema,
+  conflictOverride: z.boolean().optional(),
+  overrideReason: z.string().max(500).optional(),
+});
+
+/**
+ * Schema for bulk updating participant statuses.
+ */
+export const bulkUpdateParticipantsSchema = z.object({
+  participantIds: z.array(z.string()).min(1),
+  status: participantStatusSchema,
 });
 
 /**
@@ -117,3 +239,15 @@ export type UpdateEventSchemaInput = z.input<typeof updateEventSchema>;
 export type UpdateEventSchemaOutput = z.output<typeof updateEventSchema>;
 export type EventQuerySchemaInput = z.input<typeof eventQuerySchema>;
 export type EventQuerySchemaOutput = z.output<typeof eventQuerySchema>;
+export type CreateEventParticipantSchemaInput = z.input<typeof createEventParticipantSchema>;
+export type CreateEventParticipantSchemaOutput = z.output<typeof createEventParticipantSchema>;
+export type UpdateParticipantStatusSchemaInput = z.input<typeof updateParticipantStatusSchema>;
+export type UpdateParticipantStatusSchemaOutput = z.output<typeof updateParticipantStatusSchema>;
+export type BulkUpdateParticipantsSchemaInput = z.input<typeof bulkUpdateParticipantsSchema>;
+export type BulkUpdateParticipantsSchemaOutput = z.output<typeof bulkUpdateParticipantsSchema>;
+export type CharacterAssignmentSchemaInput = z.input<typeof characterAssignmentSchema>;
+export type CharacterAssignmentSchemaOutput = z.output<typeof characterAssignmentSchema>;
+export type CrewAssignmentSchemaInput = z.input<typeof crewAssignmentSchema>;
+export type CrewAssignmentSchemaOutput = z.output<typeof crewAssignmentSchema>;
+export type ExternalPersonSchemaInput = z.input<typeof externalPersonSchema>;
+export type ExternalPersonSchemaOutput = z.output<typeof externalPersonSchema>;
