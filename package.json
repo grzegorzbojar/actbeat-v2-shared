@@ -1,11 +1,18 @@
 {
-  "name": "@actbeat/shared",
+  "name": "@grzegorzbojar/actbeat-shared",
   "version": "0.1.0",
   "description": "Shared TypeScript types, Zod validation schemas, and utilities for Actbeat",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grzegorzbojar/actbeat-v2-shared.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "exports": {
     ".": {
       "import": {
@@ -39,7 +46,6 @@
   ],
   "author": "Actbeat",
   "license": "UNLICENSED",
-  "private": true,
   "engines": {
     "node": ">=22.0.0"
   },
