@@ -1,6 +1,6 @@
 {
   "name": "@actbeat/shared",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Shared TypeScript types, Zod validation schemas, and utilities for Actbeat",
   "type": "module",
   "main": "./dist/index.cjs",

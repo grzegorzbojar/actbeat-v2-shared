@@ -136,6 +136,37 @@ export interface BulkOperationResult<T> {
 }
 
 /**
+ * Result item for a single bulk action operation.
+ * @template T - The type of data returned on success
+ */
+export interface BulkActionResultItem<T = void> {
+  /** ID of the item processed */
+  id: string;
+  /** Whether this operation succeeded */
+  success: boolean;
+  /** Error message if failed */
+  error?: string;
+  /** Data returned on success */
+  data?: T;
+}
+
+/**
+ * Response from bulk action endpoints.
+ * Provides detailed results for each item processed.
+ * @template T - The type of data returned per successful item
+ */
+export interface BulkActionResponse<T = void> {
+  /** Total number of items requested to process */
+  totalRequested: number;
+  /** Number of items successfully processed */
+  successful: number;
+  /** Number of items that failed */
+  failed: number;
+  /** Individual results for each item */
+  results: BulkActionResultItem<T>[];
+}
+
+/**
  * Health check response.
  */
 export interface HealthCheckResponse {

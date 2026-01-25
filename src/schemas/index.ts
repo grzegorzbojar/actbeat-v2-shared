@@ -191,3 +191,25 @@ export {
   type UserAvailabilityResponseSchema,
   type BulkUserAvailabilityResponseSchema,
 } from './availability.schema.js';
+
+// Bulk action schemas
+export {
+  bulkIdsSchema,
+  bulkPublishSchema,
+  bulkUpdateLocationSchema,
+  bulkRespondSchema,
+  bulkConfirmPrivateEventsSchema,
+  bulkDeleteSchema,
+  type BulkIdsSchemaInput,
+  type BulkIdsSchemaOutput,
+  type BulkPublishSchemaInput,
+  type BulkPublishSchemaOutput,
+  type BulkUpdateLocationSchemaInput,
+  type BulkUpdateLocationSchemaOutput,
+  type BulkRespondSchemaInput,
+  type BulkRespondSchemaOutput,
+  type BulkConfirmPrivateEventsSchemaInput,
+  type BulkConfirmPrivateEventsSchemaOutput,
+  type BulkDeleteSchemaInput,
+  type BulkDeleteSchemaOutput,
+} from './bulk.schema.js';

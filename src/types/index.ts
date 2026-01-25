@@ -140,6 +140,8 @@ export {
   type SortParams,
   type DateRangeFilter,
   type BulkOperationResult,
+  type BulkActionResultItem,
+  type BulkActionResponse,
   type HealthCheckResponse,
   type RequestMetadata,
 } from './api.types.js';
@@ -182,4 +184,16 @@ export {
   type UserAvailabilityResponse,
   type BulkUserAvailabilityResponse,
 } from './availability.types.js';
+
+// Google Calendar types
+export {
+  type CreateGoogleEventResult,
+  type ParticipantGoogleResult,
+  type RsvpSyncResult,
+  type CalendarSyncState,
+  type CalendarSyncStateResponse,
+  type GoogleResponseStatus,
+  GOOGLE_TO_PARTICIPANT_STATUS,
+  PARTICIPANT_TO_GOOGLE_STATUS,
+} from './googleCalendar.types.js';
 
