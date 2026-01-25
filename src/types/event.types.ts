@@ -816,3 +816,73 @@ export interface UserOrgCalendarEvent {
   /** Location name if applicable */
   locationName: string | null;
 }
+
+/**
+ * Event detail for participant view (personal space).
+ * Used when viewing an org event from the personal calendar.
+ */
+export interface ParticipantEventDetail {
+  /** Event ID */
+  id: string;
+  /** Event title */
+  title: string;
+  /** Event start date (ISO string) */
+  startDate: string;
+  /** Event end date (ISO string) */
+  endDate: string;
+  /** Whether this is an all-day event */
+  allDay: boolean;
+  /** Event category */
+  category: EventCategory;
+  /** Event status */
+  status: EventStatus;
+  /** Event description/comment */
+  description: string | null;
+
+  /** Location info */
+  location: {
+    id: string;
+    name: string;
+    address: string | null;
+  } | null;
+
+  /** Play info (for PLAY category) */
+  play: {
+    id: string;
+    name: string;
+    color: string | null;
+  } | null;
+
+  /** Organization ID */
+  orgId: string;
+  /** Organization slug (for routing) */
+  orgSlug: string;
+  /** Organization name (for display) */
+  orgName: string;
+
+  /** Current user's participation (null if user is owner but not participant) */
+  myParticipation: {
+    participantId: string;
+    status: ParticipantStatus;
+    isRequired: boolean;
+    characterId: string | null;
+    characterName: string | null;
+    role: string | null;
+    responseAt: string | null;
+  } | null;
+
+  /** Other participants (visible to all participants) */
+  participants: Array<{
+    userId: string | null;
+    displayName: string;
+    status: ParticipantStatus;
+    isRequired: boolean;
+    characterName: string | null;
+    role: string | null;
+  }>;
+
+  /** Creation timestamp (ISO string) */
+  createdAt: string;
+  /** Last update timestamp (ISO string) */
+  updatedAt: string;
+}

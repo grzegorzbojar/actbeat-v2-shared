@@ -43,6 +43,7 @@ export {
   type PendingInvitation,
   type UserInvitationsResponse,
   type UserOrgCalendarEvent,
+  type ParticipantEventDetail,
 } from './event.types.js';
 
 // Play types
