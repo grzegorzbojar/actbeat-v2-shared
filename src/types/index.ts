@@ -163,3 +163,16 @@ export {
   type GoogleCalendarInfo,
 } from './userPreferences.types.js';
 
+// Availability types
+export {
+  UserAvailabilityStatus,
+  BlockingReason,
+  type BlockingEvent,
+  type UserAvailabilityResult,
+  type BulkUserAvailabilityResult,
+  type CheckUserAvailabilityParams,
+  type CheckBulkAvailabilityParams,
+  type UserAvailabilityResponse,
+  type BulkUserAvailabilityResponse,
+} from './availability.types.js';
+

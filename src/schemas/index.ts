@@ -150,3 +150,35 @@ export {
   type UpdateUserPreferencesSchemaInput,
   type UpdateUserPreferencesSchemaOutput,
 } from './userPreferences.schema.js';
+
+// Organization event schemas
+export {
+  orgEventCategorySchema,
+  createOrgEventSchema,
+  updateOrgEventSchema,
+  listOrgEventsQuerySchema,
+  type OrgEventCategory,
+  type CreateOrgEventInput,
+  type UpdateOrgEventInput,
+  type ListOrgEventsQuery,
+} from './orgEvent.schema.js';
+
+// Availability schemas
+export {
+  userAvailabilityStatusSchema,
+  blockingReasonSchema,
+  timeBlockResponseSchema,
+  blockingEventResponseSchema,
+  checkUserAvailabilityQuerySchema,
+  checkBulkAvailabilityBodySchema,
+  userAvailabilityResponseSchema,
+  bulkUserAvailabilityResponseSchema,
+  type UserAvailabilityStatusSchema,
+  type BlockingReasonSchema,
+  type TimeBlockResponseSchema,
+  type BlockingEventResponseSchema,
+  type CheckUserAvailabilityQuerySchema,
+  type CheckBulkAvailabilityBodySchema,
+  type UserAvailabilityResponseSchema,
+  type BulkUserAvailabilityResponseSchema,
+} from './availability.schema.js';
