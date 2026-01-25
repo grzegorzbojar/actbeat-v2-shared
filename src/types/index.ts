@@ -37,6 +37,12 @@ export {
   type AvailabilityBlock,
   type AvailabilityCheckResult,
   type BulkAvailabilityResult,
+  type PublishEventResponse,
+  type UnpublishEventResponse,
+  type RespondToInvitationResponse,
+  type PendingInvitation,
+  type UserInvitationsResponse,
+  type UserOrgCalendarEvent,
 } from './event.types.js';
 
 // Play types

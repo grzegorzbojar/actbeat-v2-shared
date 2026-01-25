@@ -697,3 +697,122 @@ export interface UpdateParticipantStatusInput {
   /** Reason for override */
   overrideReason?: string;
 }
+
+// =============================================================================
+// Workflow Response Types
+// =============================================================================
+
+/**
+ * Response from publishing an event (DRAFT → PLANNED).
+ */
+export interface PublishEventResponse {
+  /** Updated event with relations */
+  event: EventResponseWithRelations;
+  /** Number of participant records created */
+  participantsCreated: number;
+}
+
+/**
+ * Response from unpublishing an event (PLANNED → DRAFT).
+ */
+export interface UnpublishEventResponse {
+  /** Updated event with relations */
+  event: EventResponseWithRelations;
+  /** Number of participant records removed */
+  participantsRemoved: number;
+}
+
+/**
+ * Response from responding to an invitation.
+ */
+export interface RespondToInvitationResponse {
+  /** Updated participant record */
+  participant: EventParticipantResponse;
+  /** Updated event with relations */
+  event: EventResponseWithRelations;
+  /** True if event transitioned to SCHEDULED as a result */
+  eventTransitioned: boolean;
+}
+
+/**
+ * A pending invitation for a user.
+ */
+export interface PendingInvitation {
+  /** Event ID */
+  eventId: string;
+  /** Event title */
+  eventTitle: string;
+  /** Event start date (ISO string) */
+  startDate: string;
+  /** Event end date (ISO string) */
+  endDate: string;
+  /** Event category */
+  category: EventCategory;
+  /** Organization ID */
+  orgId: string;
+  /** Organization slug (for routing) */
+  orgSlug: string;
+  /** Organization name (for display) */
+  orgName: string;
+  /** Play ID if applicable */
+  playId: string | null;
+  /** Play name if applicable */
+  playName: string | null;
+  /** Character ID if applicable */
+  characterId: string | null;
+  /** Character name if applicable */
+  characterName: string | null;
+  /** Role (actor, crew, etc.) */
+  role: string | null;
+  /** Participant record ID */
+  participantId: string;
+  /** Whether this participant is required */
+  isRequired: boolean;
+}
+
+/**
+ * Response containing user's invitations.
+ */
+export interface UserInvitationsResponse {
+  /** Pending invitations awaiting response */
+  pending: PendingInvitation[];
+  /** Upcoming events user has accepted */
+  upcoming: PendingInvitation[];
+}
+
+/**
+ * An organization event for display in the user's personal calendar.
+ * Includes both pending and accepted invitations.
+ */
+export interface UserOrgCalendarEvent {
+  /** Event ID */
+  id: string;
+  /** Event title */
+  title: string;
+  /** Event start date (ISO string) */
+  startDate: string;
+  /** Event end date (ISO string) */
+  endDate: string;
+  /** Whether this is an all-day event */
+  allDay: boolean;
+  /** Event category */
+  category: EventCategory;
+  /** Event status */
+  status: EventStatus;
+  /** User's participation status */
+  participantStatus: ParticipantStatus;
+  /** Whether this participant is required */
+  isRequired: boolean;
+  /** Organization ID */
+  orgId: string;
+  /** Organization slug (for routing) */
+  orgSlug: string;
+  /** Organization name (for display) */
+  orgName: string;
+  /** Play name if applicable */
+  playName: string | null;
+  /** Character name if applicable */
+  characterName: string | null;
+  /** Location name if applicable */
+  locationName: string | null;
+}

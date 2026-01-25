@@ -251,3 +251,39 @@ export type CrewAssignmentSchemaInput = z.input<typeof crewAssignmentSchema>;
 export type CrewAssignmentSchemaOutput = z.output<typeof crewAssignmentSchema>;
 export type ExternalPersonSchemaInput = z.input<typeof externalPersonSchema>;
 export type ExternalPersonSchemaOutput = z.output<typeof externalPersonSchema>;
+
+// =============================================================================
+// Workflow Schemas
+// =============================================================================
+
+/**
+ * Schema for responding to an invitation.
+ */
+export const respondToInvitationSchema = z.object({
+  status: z.enum(['ACCEPTED', 'DECLINED']),
+});
+
+/**
+ * Schema for publishing an event (DRAFT → PLANNED).
+ */
+export const publishEventSchema = z.object({
+  adminNotes: z.string().max(2000).optional(),
+  forcePublish: z.boolean().default(false),
+});
+
+/**
+ * Schema for cancelling an event.
+ */
+export const cancelEventSchema = z.object({
+  reason: z.string().max(2000).optional(),
+});
+
+/**
+ * Type inference for workflow schemas.
+ */
+export type RespondToInvitationSchemaInput = z.input<typeof respondToInvitationSchema>;
+export type RespondToInvitationSchemaOutput = z.output<typeof respondToInvitationSchema>;
+export type PublishEventSchemaInput = z.input<typeof publishEventSchema>;
+export type PublishEventSchemaOutput = z.output<typeof publishEventSchema>;
+export type CancelEventSchemaInput = z.input<typeof cancelEventSchema>;
+export type CancelEventSchemaOutput = z.output<typeof cancelEventSchema>;

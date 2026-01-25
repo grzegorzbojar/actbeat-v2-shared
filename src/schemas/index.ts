@@ -41,6 +41,15 @@ export {
   type CrewAssignmentSchemaOutput,
   type ExternalPersonSchemaInput,
   type ExternalPersonSchemaOutput,
+  respondToInvitationSchema,
+  publishEventSchema,
+  cancelEventSchema,
+  type RespondToInvitationSchemaInput,
+  type RespondToInvitationSchemaOutput,
+  type PublishEventSchemaInput,
+  type PublishEventSchemaOutput,
+  type CancelEventSchemaInput,
+  type CancelEventSchemaOutput,
 } from './event.schema.js';
 
 // Play schemas
