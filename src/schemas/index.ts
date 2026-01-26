@@ -213,3 +213,13 @@ export {
   type BulkDeleteSchemaInput,
   type BulkDeleteSchemaOutput,
 } from './bulk.schema.js';
+
+// Onboarding schemas
+export {
+  onboardingStatusSchema,
+  createInvitationWithTagsSchema,
+  type OnboardingStatusSchemaInput,
+  type OnboardingStatusSchemaOutput,
+  type CreateInvitationWithTagsSchemaInput,
+  type CreateInvitationWithTagsSchemaOutput,
+} from './onboarding.schema.js';

@@ -19,6 +19,10 @@ import { z } from 'zod';
 export const updateUserPreferencesSchema = z.object({
   /** Enable or disable Google Calendar sync */
   googleCalendarEnabled: z.boolean().optional(),
+  /** Mark onboarding wizard as completed */
+  onboardingCompleted: z.boolean().optional(),
+  /** Mark guided tour as completed */
+  tourCompleted: z.boolean().optional(),
 });
 
 /**

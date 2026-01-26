@@ -197,3 +197,19 @@ export {
   PARTICIPANT_TO_GOOGLE_STATUS,
 } from './googleCalendar.types.js';
 
+// Onboarding types
+export {
+  type OnboardingStatusResponse,
+  type InvitationTagPreAssignment,
+  type CreateInvitationWithTagsInput,
+} from './onboarding.types.js';
+
+// User tag types
+export {
+  type UserTag,
+  type UserTagAssignment,
+  type UserTagResponse,
+  type UserWithTags,
+  type UserOrganizationTagsEntry,
+} from './userTag.types.js';
+

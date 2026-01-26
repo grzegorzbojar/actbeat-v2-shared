@@ -17,6 +17,10 @@ export interface UserPreferences {
   email: string;
   /** Whether Google Calendar sync is enabled for this user */
   googleCalendarEnabled: boolean;
+  /** Whether the user has completed the onboarding wizard */
+  onboardingCompleted: boolean;
+  /** Whether the user has completed the guided tour */
+  tourCompleted: boolean;
   /** When the preferences record was created */
   createdAt: Date;
   /** When the preferences were last updated */
@@ -36,6 +40,10 @@ export interface UserPreferencesResponse {
   email: string;
   /** Whether Google Calendar sync is enabled for this user */
   googleCalendarEnabled: boolean;
+  /** Whether the user has completed the onboarding wizard */
+  onboardingCompleted: boolean;
+  /** Whether the user has completed the guided tour */
+  tourCompleted: boolean;
   /** When the preferences record was created (ISO string) */
   createdAt: string;
   /** When the preferences were last updated (ISO string) */
@@ -49,6 +57,10 @@ export interface UserPreferencesResponse {
 export interface UpdateUserPreferencesInput {
   /** Enable or disable Google Calendar sync */
   googleCalendarEnabled?: boolean;
+  /** Mark onboarding wizard as completed */
+  onboardingCompleted?: boolean;
+  /** Mark guided tour as completed */
+  tourCompleted?: boolean;
 }
 
 /**
