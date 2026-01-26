@@ -213,3 +213,8 @@ export {
   type UserOrganizationTagsEntry,
 } from './userTag.types.js';
 
+// Organization types
+export {
+  type OrgStatsResponse,
+} from './organization.types.js';
+
