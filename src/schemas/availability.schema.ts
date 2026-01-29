@@ -18,6 +18,7 @@ export const blockingReasonSchema = z.enum([
   'PRIVATE_EVENT_TENTATIVE',
   'ORG_EVENT_ACCEPTED',
   'ORG_EVENT_PENDING',
+  'ORG_EVENT_DRAFT',
 ]);
 
 /**

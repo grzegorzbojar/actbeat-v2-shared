@@ -223,3 +223,13 @@ export {
   type CreateInvitationWithTagsSchemaInput,
   type CreateInvitationWithTagsSchemaOutput,
 } from './onboarding.schema.js';
+
+// Scheduler schemas
+export {
+  schedulerParamsSchema,
+  schedulerDayDetailParamsSchema,
+  type SchedulerParamsSchemaInput,
+  type SchedulerParamsSchemaOutput,
+  type SchedulerDayDetailParamsSchemaInput,
+  type SchedulerDayDetailParamsSchemaOutput,
+} from './scheduler.schema.js';

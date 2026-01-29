@@ -32,6 +32,8 @@ export enum BlockingReason {
   ORG_EVENT_ACCEPTED = 'ORG_EVENT_ACCEPTED',
   /** Organization event where user is participant (PENDING) */
   ORG_EVENT_PENDING = 'ORG_EVENT_PENDING',
+  /** Organization event in DRAFT status (tentative block) */
+  ORG_EVENT_DRAFT = 'ORG_EVENT_DRAFT',
 }
 
 /**
@@ -51,6 +53,8 @@ export interface BlockingEvent {
   blockingReason: BlockingReason;
   /** Event category (PRIVATE, PLAY, TRIAL, TECHNICAL) */
   category: string;
+  /** Event color (hex string), if set */
+  color?: string | null;
 }
 
 /**
@@ -178,6 +182,7 @@ export interface UserAvailabilityResponse {
     endDate: string;
     blockingReason: BlockingReason;
     category: string;
+    color?: string | null;
   }>;
 }
 

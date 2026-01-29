@@ -218,3 +218,25 @@ export {
   type OrgStatsResponse,
 } from './organization.types.js';
 
+// Scheduler types
+export {
+  type SchedulerAvailability,
+  type SchedulerParams,
+  type SchedulerConflict,
+  type SchedulerActorResult,
+  type SchedulerCharacterResult,
+  type SchedulerPlayResult,
+  type SchedulerDayResult,
+  type SchedulerProgress,
+  type SchedulerComplete,
+  type SchedulerUserEnrichment,
+  type SchedulerSSEEvent,
+} from './scheduler.types.js';
+
+// Calendar types
+export {
+  type CalendarEventSource,
+  type ParticipantSummary,
+  type CalendarEvent,
+} from './calendar.types.js';
+
