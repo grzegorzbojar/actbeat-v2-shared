@@ -107,12 +107,15 @@ export {
 export {
   ObjectType,
   ActivityAction,
+  type FieldValueType,
+  type ActivityFieldChange,
   type Activity,
   type CreateActivityInput,
   type ActivityQueryParams,
   type ActivityResponse,
   type ActivityWithNames,
   type ActivityDetails,
+  type ActivitiesListResponse,
 } from './activity.types.js';
 
 // User types
@@ -239,4 +242,14 @@ export {
   type ParticipantSummary,
   type CalendarEvent,
 } from './calendar.types.js';
+
+// Statistics types
+export {
+  statisticsQuerySchema,
+  type StatisticsQuery,
+  type PlayStatItem,
+  type ActorStatItem,
+  type StatisticsSummary,
+  type StatisticsResponse,
+} from './statistics.types.js';
 

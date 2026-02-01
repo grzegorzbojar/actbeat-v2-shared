@@ -28,6 +28,10 @@ export interface SchedulerParams {
   dailyEndTime: string;
   /** Optional list of play IDs to evaluate; if omitted, all org plays are checked */
   playIds?: string[];
+  /** If true, skip location availability checks (default: false) */
+  ignoreLocationChecks?: boolean;
+  /** Filter plays to only those with these defaultLocationIds */
+  filterByLocationIds?: string[];
 }
 
 /**
@@ -92,10 +96,20 @@ export interface SchedulerPlayResult {
   playDuration: number | null;
   /** Play color (hex string), or null if not set */
   playColor: string | null;
-  /** Overall availability for the play (worst-case across all characters) */
+  /** Overall availability for the play (worst-case across all characters and location) */
   availability: SchedulerAvailability;
   /** Per-character availability breakdown */
   characters: SchedulerCharacterResult[];
+  /** Default location ID, or null if none */
+  defaultLocationId: string | null;
+  /** Default location name for display */
+  defaultLocationName: string | null;
+  /** Location availability: 'available' | 'tentative' | 'unavailable' | null (null if no location) */
+  locationAvailability: SchedulerAvailability | null;
+  /** Number of location conflicts if unavailable */
+  locationConflictCount?: number;
+  /** Location conflicts with full event details for timeline display */
+  locationConflicts?: SchedulerConflict[];
 }
 
 /**

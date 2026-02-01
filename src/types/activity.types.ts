@@ -21,6 +21,10 @@ export enum ObjectType {
   USER = 'USER',
   /** Location entity */
   LOCATION = 'LOCATION',
+  /** Tag entity */
+  TAG = 'TAG',
+  /** Organization invitation entity */
+  INVITATION = 'INVITATION',
 }
 
 /**
@@ -40,6 +44,41 @@ export enum ActivityAction {
   RENAME = 'RENAME',
   /** User was invited to organization */
   INVITE = 'INVITE',
+  /** Attendance response to an event (accepted, declined, tentative) */
+  ATTENDANCE_RESPONSE = 'ATTENDANCE_RESPONSE',
+  /** Workflow state change (e.g., draft -> published) */
+  WORKFLOW_CHANGE = 'WORKFLOW_CHANGE',
+  /** Access or permission revoked */
+  REVOKE = 'REVOKE',
+  /** Entity assigned to something (e.g., actor to character) */
+  ASSIGN = 'ASSIGN',
+  /** Entity unassigned from something */
+  UNASSIGN = 'UNASSIGN',
+}
+
+/**
+ * Type of value stored in an activity field change.
+ * Used for proper rendering and formatting in the UI.
+ */
+export type FieldValueType = 'string' | 'date' | 'color' | 'relation' | 'array' | 'number' | 'boolean';
+
+/**
+ * Represents a single field change within an activity.
+ * Used for detailed change tracking and UI display.
+ */
+export interface ActivityFieldChange {
+  /** Unique identifier for the field change */
+  id: string;
+  /** Name of the changed field (database column name) */
+  fieldName: string;
+  /** i18n key for the field label, null if using fieldName directly */
+  fieldLabel: string | null;
+  /** Value before the change */
+  oldValue: unknown;
+  /** Value after the change */
+  newValue: unknown;
+  /** Type of the value for proper rendering */
+  valueType: FieldValueType;
 }
 
 /**
@@ -118,6 +157,7 @@ export interface ActivityQueryParams {
 /**
  * Activity response DTO for API responses.
  * Converts dates to ISO strings for JSON serialization.
+ * Enhanced with field changes and resolved names for rich UI display.
  */
 export interface ActivityResponse {
   /** Unique identifier */
@@ -126,22 +166,59 @@ export interface ActivityResponse {
   objectType: ObjectType;
   /** ID of the affected object */
   objectId: string;
+  /** Name of the affected object (resolved for display) */
+  objectName: string | null;
   /** ID of the user who performed the action */
   userId: string;
+  /** Name of the user who performed the action (resolved from Clerk) */
+  userName?: string;
+  /** Avatar URL of the user (resolved from Clerk) */
+  userAvatar?: string;
+  /** Organization ID (null for personal/private activities) */
+  orgId: string | null;
+  /** Owner ID for personal events/activities */
+  ownerId: string | null;
   /** Type of action performed */
   action: ActivityAction;
   /** Timestamp as ISO string */
   timestamp: string;
-  /** Additional details about the action */
-  details: ActivityDetails | null;
+  /** Type of parent object (e.g., PLAY for a SCENE activity) */
+  parentType: ObjectType | null;
+  /** ID of the parent object */
+  parentId: string | null;
+  /** Name of the parent object (resolved for display) */
+  parentName: string | null;
+  /** Detailed field changes for UPDATE actions */
+  fieldChanges: ActivityFieldChange[];
+  /** Additional context about the action (flexible metadata) */
+  context: Record<string, unknown> | null;
+  /** @deprecated Use objectName, userName, and context instead */
+  details?: ActivityDetails | null;
 }
 
 /**
  * Activity with resolved entity names for display.
+ * @deprecated Use ActivityResponse directly - names are now included by default
  */
 export interface ActivityWithNames extends ActivityResponse {
   /** Name of the user who performed the action */
   userName: string;
   /** Name of the affected object */
   objectName: string;
+}
+
+/**
+ * Cursor-based pagination response for activities list.
+ * More efficient than offset pagination for large activity logs.
+ */
+export interface ActivitiesListResponse {
+  /** List of activity entries */
+  data: ActivityResponse[];
+  /** Pagination metadata */
+  meta: {
+    /** Cursor for fetching the next page, null if no more results */
+    cursor: string | null;
+    /** Whether there are more results after this page */
+    hasMore: boolean;
+  };
 }

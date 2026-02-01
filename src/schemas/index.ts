@@ -233,3 +233,15 @@ export {
   type SchedulerDayDetailParamsSchemaInput,
   type SchedulerDayDetailParamsSchemaOutput,
 } from './scheduler.schema.js';
+
+// Activity schemas
+export {
+  objectTypeSchema,
+  activityActionSchema,
+  activityQuerySchema,
+  objectActivitiesParamsSchema,
+  type ActivityQuerySchemaInput,
+  type ActivityQuerySchemaOutput,
+  type ObjectActivitiesParamsSchemaInput,
+  type ObjectActivitiesParamsSchemaOutput,
+} from './activity.schema.js';
