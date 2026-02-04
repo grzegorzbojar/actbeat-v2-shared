@@ -15,6 +15,9 @@ export {
   characterAssignmentSchema,
   crewAssignmentSchema,
   playEventMetadataSchema,
+  rehearsalActorAssignmentSchema,
+  rehearsalCharacterAssignmentSchema,
+  rehearsalEventMetadataSchema,
   trialEventMetadataSchema,
   eventMetadataSchema,
   createEventSchema,
@@ -41,6 +44,12 @@ export {
   type CrewAssignmentSchemaOutput,
   type ExternalPersonSchemaInput,
   type ExternalPersonSchemaOutput,
+  type RehearsalActorAssignmentSchemaInput,
+  type RehearsalActorAssignmentSchemaOutput,
+  type RehearsalCharacterAssignmentSchemaInput,
+  type RehearsalCharacterAssignmentSchemaOutput,
+  type RehearsalEventMetadataSchemaInput,
+  type RehearsalEventMetadataSchemaOutput,
   respondToInvitationSchema,
   publishEventSchema,
   cancelEventSchema,
@@ -54,6 +63,9 @@ export {
 
 // Play schemas
 export {
+  crewRoleAssignmentTypeSchema,
+  crewRoleDefinitionSchema,
+  crewRolesArraySchema,
   createPlaySchema,
   updatePlaySchema,
   playQuerySchema,

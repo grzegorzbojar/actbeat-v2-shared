@@ -4,6 +4,72 @@
  */
 
 import { z } from 'zod';
+import { hexColorSchema } from './common.schema.js';
+
+/**
+ * Assignment type enum for crew roles.
+ */
+export const crewRoleAssignmentTypeSchema = z.enum(['userTag', 'specificUsers']);
+
+/**
+ * Schema for a single crew role definition.
+ * Includes conditional validation based on assignmentType.
+ */
+export const crewRoleDefinitionSchema = z
+  .object({
+    id: z.string().uuid('Invalid crew role ID format'),
+    name: z.string().min(1, 'Crew role name is required').max(50, 'Crew role name is too long (max 50 characters)'),
+    description: z.string().max(500, 'Description is too long (max 500 characters)').optional(),
+    color: hexColorSchema,
+    requiredCount: z.number().int().min(1, 'Required count must be at least 1').max(99, 'Required count cannot exceed 99'),
+    orderIndex: z.number().int().min(0),
+    assignmentType: crewRoleAssignmentTypeSchema,
+    userTagId: z.string().optional(),
+    assignedUserIds: z.array(z.string()).optional(),
+    isOptional: z.boolean().optional(),
+  })
+  .refine(
+    (data) => {
+      // When assignmentType is 'userTag', userTagId must be provided
+      if (data.assignmentType === 'userTag') {
+        return data.userTagId !== undefined && data.userTagId.length > 0;
+      }
+      return true;
+    },
+    { message: 'User tag is required when assignment type is "userTag"', path: ['userTagId'] }
+  )
+  .refine(
+    (data) => {
+      // When assignmentType is 'specificUsers', assignedUserIds must have at least 1 user
+      if (data.assignmentType === 'specificUsers') {
+        return data.assignedUserIds !== undefined && data.assignedUserIds.length >= 1;
+      }
+      return true;
+    },
+    { message: 'At least one user must be assigned when assignment type is "specificUsers"', path: ['assignedUserIds'] }
+  );
+
+/**
+ * Schema for an array of crew role definitions with uniqueness validation.
+ */
+export const crewRolesArraySchema = z
+  .array(crewRoleDefinitionSchema)
+  .max(100, 'Maximum 100 crew roles per play')
+  .refine(
+    (roles) => {
+      const ids = roles.map((r) => r.id);
+      return new Set(ids).size === ids.length;
+    },
+    { message: 'Crew role IDs must be unique' }
+  )
+  .refine(
+    (roles) => {
+      const names = roles.map((r) => r.name.toLowerCase());
+      return new Set(names).size === names.length;
+    },
+    { message: 'Crew role names must be unique (case-insensitive)' }
+  )
+  .nullish();
 
 /**
  * Schema for creating a new play.
@@ -22,6 +88,7 @@ export const createPlaySchema = z.object({
     .nullish(),
   defaultLocationId: z.string().optional().nullable(),
   tagIds: z.array(z.string()).default([]),
+  crewRoles: crewRolesArraySchema,
 });
 
 /**
@@ -41,6 +108,7 @@ export const updatePlaySchema = z.object({
     .nullish(),
   defaultLocationId: z.string().optional().nullable(),
   tagIds: z.array(z.string()).optional(),
+  crewRoles: crewRolesArraySchema,
 });
 
 /**

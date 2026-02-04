@@ -32,6 +32,8 @@ export interface SchedulerParams {
   ignoreLocationChecks?: boolean;
   /** Filter plays to only those with these defaultLocationIds */
   filterByLocationIds?: string[];
+  /** If true, skip crew role availability checks (default: false) */
+  ignoreCrewChecks?: boolean;
 }
 
 /**
@@ -84,6 +86,44 @@ export interface SchedulerCharacterResult {
 }
 
 /**
+ * Scheduler result for a single user eligible for a crew role.
+ * Contains availability status and conflicts for the evaluated time slot.
+ */
+export interface SchedulerCrewUserResult {
+  /** Clerk user ID */
+  userId: string;
+  /** User's availability status for the evaluated time slot */
+  availability: SchedulerAvailability;
+  /** List of conflicts affecting this user's availability */
+  conflicts: SchedulerConflict[];
+}
+
+/**
+ * Scheduler result for a single crew role within a play.
+ * Aggregates availability across all eligible users for the role.
+ */
+export interface SchedulerCrewRoleResult {
+  /** Crew role definition ID */
+  roleDefinitionId: string;
+  /** Crew role display name */
+  roleName: string;
+  /** Crew role color (hex string) */
+  roleColor: string;
+  /** Number of users required for this role */
+  requiredCount: number;
+  /** Whether this role is optional (can be left unfilled) */
+  isOptional: boolean;
+  /** How users are assigned: by tag or specific user selection */
+  assignmentType: 'userTag' | 'specificUsers';
+  /** Eligible users and their availability */
+  users: SchedulerCrewUserResult[];
+  /** Number of available users (available or tentative) */
+  availableCount: number;
+  /** True if availableCount >= requiredCount */
+  isSatisfied: boolean;
+}
+
+/**
  * Scheduler result for a single play on a given day.
  * Aggregates character-level results into overall play availability.
  */
@@ -110,6 +150,8 @@ export interface SchedulerPlayResult {
   locationConflictCount?: number;
   /** Location conflicts with full event details for timeline display */
   locationConflicts?: SchedulerConflict[];
+  /** Per-crew-role availability breakdown (null if crew mode disabled or no roles) */
+  crewRoles: SchedulerCrewRoleResult[] | null;
 }
 
 /**

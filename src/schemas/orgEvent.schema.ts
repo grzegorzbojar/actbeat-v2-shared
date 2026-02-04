@@ -1,17 +1,25 @@
 /**
- * Zod validation schemas for Organization Events (PLAY, TRIAL, TECHNICAL).
+ * Zod validation schemas for Organization Events (PLAY, REHEARSAL, TRIAL, TECHNICAL, OTHER).
  * @module schemas/orgEvent
  */
 
 import { z } from 'zod';
-import { eventStatusSchema, playEventMetadataSchema } from './event.schema.js';
+import { eventStatusSchema, playEventMetadataSchema, rehearsalEventMetadataSchema } from './event.schema.js';
 import { hexColorSchema } from './common.schema.js';
 import { EventStatus } from '../types/event.types.js';
 
 /**
  * Organization event category - excludes PRIVATE.
  */
-export const orgEventCategorySchema = z.enum(['PLAY', 'TRIAL', 'TECHNICAL']);
+export const orgEventCategorySchema = z.enum(['PLAY', 'REHEARSAL', 'TRIAL', 'TECHNICAL', 'OTHER']);
+
+/**
+ * Combined metadata schema for org events (PLAY or REHEARSAL).
+ */
+export const orgEventMetadataSchema = z.union([
+  playEventMetadataSchema,
+  rehearsalEventMetadataSchema,
+]);
 
 /**
  * Schema for creating an organization event.
@@ -27,8 +35,8 @@ export const createOrgEventSchema = z
     comment: z.string().max(2000).nullish(),
     color: hexColorSchema.nullish(),
     locationId: z.string().nullish(),
-    playId: z.string().nullish(), // Required for PLAY category
-    metadata: playEventMetadataSchema.nullish(), // Typed for PLAY events
+    playId: z.string().nullish(), // Required for PLAY and REHEARSAL categories
+    metadata: orgEventMetadataSchema.nullish(), // Typed for PLAY and REHEARSAL events
     tagIds: z.array(z.string()).default([]),
     adminNotes: z.string().max(2000).nullish(),
     minimumNoticePeriod: z.number().int().min(0).nullish(),
@@ -37,8 +45,8 @@ export const createOrgEventSchema = z
     message: 'End date must be after start date',
     path: ['endDate'],
   })
-  .refine((data) => data.category !== 'PLAY' || data.playId, {
-    message: 'playId is required for PLAY events',
+  .refine((data) => (data.category !== 'PLAY' && data.category !== 'REHEARSAL') || data.playId, {
+    message: 'playId is required for PLAY and REHEARSAL events',
     path: ['playId'],
   });
 
@@ -57,7 +65,7 @@ export const updateOrgEventSchema = z
     color: hexColorSchema.nullish(),
     locationId: z.string().nullish(),
     playId: z.string().nullish(),
-    metadata: playEventMetadataSchema.nullish(),
+    metadata: orgEventMetadataSchema.nullish(), // Typed for PLAY and REHEARSAL events
     tagIds: z.array(z.string()).optional(),
     adminNotes: z.string().max(2000).nullish(),
     minimumNoticePeriod: z.number().int().min(0).nullish(),

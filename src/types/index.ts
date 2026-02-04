@@ -22,6 +22,9 @@ export {
   type EventResponseWithRelations,
   type EventMetadata,
   type PlayEventMetadata,
+  type RehearsalEventMetadata,
+  type RehearsalCharacterAssignment,
+  type RehearsalActorAssignment,
   type TrialEventMetadata,
   type ExternalPerson,
   type CharacterAssignment,
@@ -48,6 +51,8 @@ export {
 
 // Play types
 export {
+  type CrewRoleAssignmentType,
+  type CrewRoleDefinition,
   type Play,
   type PlayWithRelations,
   type CreatePlayInput,
@@ -228,6 +233,8 @@ export {
   type SchedulerConflict,
   type SchedulerActorResult,
   type SchedulerCharacterResult,
+  type SchedulerCrewUserResult,
+  type SchedulerCrewRoleResult,
   type SchedulerPlayResult,
   type SchedulerDayResult,
   type SchedulerProgress,
@@ -249,6 +256,8 @@ export {
   type StatisticsQuery,
   type PlayStatItem,
   type ActorStatItem,
+  type CrewRoleBreakdownItem,
+  type CrewStatItem,
   type StatisticsSummary,
   type StatisticsResponse,
 } from './statistics.types.js';

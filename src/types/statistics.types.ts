@@ -37,6 +37,8 @@ export const statisticsQuerySchema = z.object({
     .array(z.nativeEnum(ParticipantStatus))
     .optional()
     .default([ParticipantStatus.ACCEPTED, ParticipantStatus.PENDING]),
+  /** Include crew statistics in response (only when crew mode enabled) */
+  includeCrewStats: z.boolean().optional(),
 });
 
 /**
@@ -73,6 +75,34 @@ export interface ActorStatItem {
 }
 
 /**
+ * Role breakdown item - shows event count for a specific crew role.
+ */
+export interface CrewRoleBreakdownItem {
+  /** Crew role definition ID */
+  roleDefinitionId: string;
+  /** Human-readable role name */
+  roleName: string;
+  /** Number of events for this role */
+  eventCount: number;
+}
+
+/**
+ * Crew member statistics item.
+ */
+export interface CrewStatItem {
+  /** Clerk user ID (null for external crew) */
+  userId: string | null;
+  /** Display name (from Clerk or externalPerson.name) */
+  displayName: string;
+  /** User profile image URL (null for external) */
+  imageUrl: string | null;
+  /** Total number of events this crew member is assigned to */
+  eventCount: number;
+  /** Breakdown by role */
+  roleBreakdown: CrewRoleBreakdownItem[];
+}
+
+/**
  * Summary statistics.
  */
 export interface StatisticsSummary {
@@ -82,6 +112,8 @@ export interface StatisticsSummary {
   totalPlays: number;
   /** Total number of unique actors */
   totalActors: number;
+  /** Total unique crew members (only when crew mode enabled) */
+  totalCrew?: number;
 }
 
 /**
@@ -92,6 +124,8 @@ export interface StatisticsResponse {
   playStats: PlayStatItem[];
   /** Actor event counts */
   actorStats: ActorStatItem[];
+  /** Crew statistics (only when crew mode enabled and requested) */
+  crewStats?: CrewStatItem[];
   /** Summary totals */
   summary: StatisticsSummary;
 }

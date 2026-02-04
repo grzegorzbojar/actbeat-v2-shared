@@ -17,10 +17,14 @@ export enum EventCategory {
   PRIVATE = 'PRIVATE',
   /** Play rehearsals and performances */
   PLAY = 'PLAY',
+  /** Rehearsal events (practice sessions) */
+  REHEARSAL = 'REHEARSAL',
   /** Trial/audition events */
   TRIAL = 'TRIAL',
   /** Technical rehearsals and setup */
   TECHNICAL = 'TECHNICAL',
+  /** Miscellaneous organization events */
+  OTHER = 'OTHER',
 }
 
 /**
@@ -170,9 +174,57 @@ export interface TrialEventMetadata {
 }
 
 /**
+ * Actor assignment for rehearsal events.
+ * Multiple actors can be assigned to a single character in rehearsals.
+ */
+export interface RehearsalActorAssignment {
+  /** Clerk user ID if internal actor */
+  userId: string | null;
+  /** External actor info if not a Clerk user */
+  externalActor?: ExternalPerson;
+}
+
+/**
+ * Character assignment for rehearsal events.
+ * Differs from CharacterAssignment in that it supports multiple actors and skipping.
+ */
+export interface RehearsalCharacterAssignment {
+  /** ID of the character */
+  characterId: string;
+  /** Multiple actors can be assigned to one character in rehearsals */
+  actors: RehearsalActorAssignment[];
+  /** Whether to skip this character for partial rehearsal */
+  skip?: boolean;
+}
+
+/**
+ * Event metadata for REHEARSAL category events.
+ * Rehearsals differ from performances:
+ * - Multiple actors per character
+ * - Characters can be skipped
+ * - No crew members required
+ * - Can select specific scenes
+ * - Has "others" field for additional invitees
+ */
+export interface RehearsalEventMetadata {
+  /** ID of the associated play */
+  playId: string;
+  /** IDs of scenes being rehearsed (optional - empty means all scenes) */
+  sceneIds?: string[];
+  /** Character assignments with multiple actors */
+  characterAssignments: RehearsalCharacterAssignment[];
+  /** Additional org member userIds to invite (not actors) */
+  othersInvitees?: string[];
+  /** Type of rehearsal */
+  rehearsalType?: RehearsalType;
+  /** Notes about this rehearsal */
+  notes?: string;
+}
+
+/**
  * Union type for event metadata based on category.
  */
-export type EventMetadata = PlayEventMetadata | TrialEventMetadata | Record<string, unknown>;
+export type EventMetadata = PlayEventMetadata | RehearsalEventMetadata | TrialEventMetadata | Record<string, unknown>;
 
 /**
  * Core Event entity matching the Prisma Event model.

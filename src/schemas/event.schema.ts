@@ -98,10 +98,40 @@ export const trialEventMetadataSchema = z.object({
 });
 
 /**
+ * Rehearsal actor assignment schema.
+ */
+export const rehearsalActorAssignmentSchema = z.object({
+  userId: z.string().nullable(),
+  externalActor: externalPersonSchema.optional(),
+});
+
+/**
+ * Rehearsal character assignment schema.
+ */
+export const rehearsalCharacterAssignmentSchema = z.object({
+  characterId: z.string().min(1),
+  actors: z.array(rehearsalActorAssignmentSchema).default([]),
+  skip: z.boolean().optional(),
+});
+
+/**
+ * Rehearsal event metadata schema.
+ */
+export const rehearsalEventMetadataSchema = z.object({
+  playId: z.string().min(1),
+  sceneIds: z.array(z.string()).optional(),
+  characterAssignments: z.array(rehearsalCharacterAssignmentSchema).default([]),
+  othersInvitees: z.array(z.string()).optional(),
+  rehearsalType: rehearsalTypeSchema.optional(),
+  notes: z.string().max(2000).optional(),
+});
+
+/**
  * Generic event metadata schema.
  */
 export const eventMetadataSchema = z.union([
   playEventMetadataSchema,
+  rehearsalEventMetadataSchema,
   trialEventMetadataSchema,
   z.record(z.unknown()),
 ]);
@@ -251,6 +281,12 @@ export type CrewAssignmentSchemaInput = z.input<typeof crewAssignmentSchema>;
 export type CrewAssignmentSchemaOutput = z.output<typeof crewAssignmentSchema>;
 export type ExternalPersonSchemaInput = z.input<typeof externalPersonSchema>;
 export type ExternalPersonSchemaOutput = z.output<typeof externalPersonSchema>;
+export type RehearsalActorAssignmentSchemaInput = z.input<typeof rehearsalActorAssignmentSchema>;
+export type RehearsalActorAssignmentSchemaOutput = z.output<typeof rehearsalActorAssignmentSchema>;
+export type RehearsalCharacterAssignmentSchemaInput = z.input<typeof rehearsalCharacterAssignmentSchema>;
+export type RehearsalCharacterAssignmentSchemaOutput = z.output<typeof rehearsalCharacterAssignmentSchema>;
+export type RehearsalEventMetadataSchemaInput = z.input<typeof rehearsalEventMetadataSchema>;
+export type RehearsalEventMetadataSchemaOutput = z.output<typeof rehearsalEventMetadataSchema>;
 
 // =============================================================================
 // Workflow Schemas

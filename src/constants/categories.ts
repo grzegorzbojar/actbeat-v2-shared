@@ -49,6 +49,15 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryInfo> = {
     descriptionKey: 'eventCategory.playDescription',
     defaultDescription: 'Rehearsals and performances',
   },
+  [EventCategory.REHEARSAL]: {
+    id: EventCategory.REHEARSAL,
+    labelKey: 'eventCategory.rehearsal',
+    defaultLabel: 'Rehearsal',
+    color: '#10B981', // Emerald
+    textColor: '#FFFFFF',
+    descriptionKey: 'eventCategory.rehearsalDescription',
+    defaultDescription: 'Practice sessions for plays',
+  },
   [EventCategory.TRIAL]: {
     id: EventCategory.TRIAL,
     labelKey: 'eventCategory.trial',
@@ -66,6 +75,15 @@ export const EVENT_CATEGORIES: Record<EventCategory, CategoryInfo> = {
     textColor: '#000000',
     descriptionKey: 'eventCategory.technicalDescription',
     defaultDescription: 'Technical rehearsals and setup',
+  },
+  [EventCategory.OTHER]: {
+    id: EventCategory.OTHER,
+    labelKey: 'eventCategory.other',
+    defaultLabel: 'Other',
+    color: '#64748B', // Slate
+    textColor: '#FFFFFF',
+    descriptionKey: 'eventCategory.otherDescription',
+    defaultDescription: 'Miscellaneous organization events',
   },
 } as const;
 
@@ -123,8 +141,10 @@ export function getCategoryTextColor(category: EventCategory): string {
 export const ALL_CATEGORIES: readonly EventCategory[] = [
   EventCategory.PRIVATE,
   EventCategory.PLAY,
+  EventCategory.REHEARSAL,
   EventCategory.TRIAL,
   EventCategory.TECHNICAL,
+  EventCategory.OTHER,
 ] as const;
 
 /**
@@ -132,6 +152,8 @@ export const ALL_CATEGORIES: readonly EventCategory[] = [
  */
 export const ORG_CATEGORIES: readonly EventCategory[] = [
   EventCategory.PLAY,
+  EventCategory.REHEARSAL,
   EventCategory.TRIAL,
   EventCategory.TECHNICAL,
+  EventCategory.OTHER,
 ] as const;
