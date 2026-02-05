@@ -265,6 +265,10 @@ export interface Event {
   adminNotes: string | null;
   /** Minimum notice period in hours */
   minimumNoticePeriod: number | null;
+  /** Persisted healthcheck result (JSON) */
+  healthcheckResult: HealthcheckResult | null;
+  /** Timestamp of the last healthcheck run */
+  healthcheckAt: Date | null;
   /** Google Calendar event ID */
   googleEventId: string | null;
   /** Google Calendar ID */
@@ -480,6 +484,10 @@ export interface EventResponse {
   adminNotes: string | null;
   /** Minimum notice period in hours */
   minimumNoticePeriod: number | null;
+  /** Persisted healthcheck result (JSON) */
+  healthcheckResult: HealthcheckResult | null;
+  /** Timestamp of the last healthcheck run as ISO string */
+  healthcheckAt: string | null;
   /** Google Calendar event ID */
   googleEventId: string | null;
   /** Google Calendar ID */
@@ -568,10 +576,16 @@ export enum HealthcheckIssueType {
   UNFILLED_CREW_ROLE = 'UNFILLED_CREW_ROLE',
   /** Location has a conflict */
   LOCATION_CONFLICT = 'LOCATION_CONFLICT',
+  /** Location is not set */
+  MISSING_LOCATION = 'MISSING_LOCATION',
   /** Notice period not met */
   NOTICE_PERIOD = 'NOTICE_PERIOD',
   /** Conflict with another play event (even draft) */
   PLAY_EVENT_CONFLICT = 'PLAY_EVENT_CONFLICT',
+  /** A participant has declined the invitation */
+  DECLINED_PARTICIPANT = 'DECLINED_PARTICIPANT',
+  /** A new scheduling conflict appeared after the invitation was sent */
+  NEW_CONFLICT_SINCE_INVITE = 'NEW_CONFLICT_SINCE_INVITE',
   /** General warning */
   GENERAL = 'GENERAL',
 }
@@ -637,6 +651,54 @@ export interface LocationConflict {
 }
 
 /**
+ * Issue detail for a participant who declined an event invitation.
+ */
+export interface DeclinedParticipantIssue {
+  /** Clerk user ID of the participant who declined */
+  userId: string;
+  /** Display name of the participant */
+  userName: string;
+  /** Character ID if the participant was assigned as an actor */
+  characterId?: string;
+  /** Character name for display */
+  characterName?: string;
+  /** Role of the participant (actor, crew, etc.) */
+  role?: string;
+  /** Whether this participant was marked as required */
+  isRequired: boolean;
+  /** ISO timestamp when the participant declined */
+  declinedAt: string;
+}
+
+/**
+ * Issue detail for a new scheduling conflict that appeared after an invitation was sent.
+ * This occurs when a participant creates or accepts another event that overlaps
+ * with this event after they were already invited.
+ */
+export interface NewConflictSinceInviteIssue {
+  /** Clerk user ID of the participant with the new conflict */
+  userId: string;
+  /** Display name of the participant */
+  userName: string;
+  /** Character ID if the participant was assigned as an actor */
+  characterId?: string;
+  /** Character name for display */
+  characterName?: string;
+  /** ID of the event causing the conflict */
+  conflictingEventId: string;
+  /** Title of the event causing the conflict */
+  conflictingEventTitle: string;
+  /** ISO timestamp for the start of the conflicting event */
+  conflictStart: string;
+  /** ISO timestamp for the end of the conflicting event */
+  conflictEnd: string;
+  /** Type of the conflicting event for severity assessment */
+  conflictType: 'PRIVATE_CONFIRMED' | 'PRIVATE_TENTATIVE' | 'ORG_ACCEPTED' | 'ORG_PENDING';
+  /** Severity: ERROR for confirmed conflicts, WARNING for tentative/pending */
+  severity: 'ERROR' | 'WARNING';
+}
+
+/**
  * Result of healthcheck validation before publishing.
  */
 export interface HealthcheckResult {
@@ -660,6 +722,36 @@ export interface HealthcheckResult {
   hoursUntilEvent: number;
   /** Required notice period in hours */
   requiredNoticePeriod: number;
+  /** Event workflow status at the time of the healthcheck (string to avoid backend enum dependency) */
+  eventStatus: string;
+  /** ISO timestamp when the healthcheck was performed */
+  checkedAt: string;
+  /** Summary counts of issues by severity */
+  summary: {
+    /** Number of ERROR-level issues */
+    errors: number;
+    /** Number of WARNING-level issues */
+    warnings: number;
+    /** Number of INFO-level issues */
+    infos: number;
+  };
+  /** Participants who have declined the event invitation */
+  declinedParticipants: DeclinedParticipantIssue[];
+  /** New scheduling conflicts detected since invitations were sent */
+  newConflictsSinceInvite: NewConflictSinceInviteIssue[];
+}
+
+/**
+ * Response from running a healthcheck on an event.
+ * Returned by the POST /api/events/:id/healthcheck endpoint.
+ */
+export interface HealthcheckRunResponse {
+  /** ID of the event that was checked */
+  eventId: string;
+  /** The healthcheck result */
+  result: HealthcheckResult;
+  /** Whether the result was persisted to the database */
+  persisted: boolean;
 }
 
 // =============================================================================

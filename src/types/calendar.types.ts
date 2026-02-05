@@ -79,6 +79,8 @@ export interface CalendarEvent {
   myParticipantStatus?: ParticipantStatus;
   /** Event workflow status */
   status?: EventStatus;
+  /** Healthcheck status for visual indicator */
+  healthcheckStatus?: 'error' | 'warning' | 'clean' | null;
 
   // Proposed event properties (from scheduler)
   /** Whether this is a proposed event from scheduler (for border styling) */
