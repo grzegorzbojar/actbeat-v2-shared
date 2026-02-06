@@ -265,3 +265,19 @@ export {
   type StatisticsResponse,
 } from './statistics.types.js';
 
+// Open Role types
+export {
+  type EventOpenRole,
+  type EventOpenRoleWithRelations,
+  type EventRoleSignup,
+  type EventOpenRoleResponse,
+  type EventRoleSignupResponse,
+  type CreateOpenRoleInput,
+  type UpdateOpenRoleInput,
+  type SignupForRoleResponse,
+  type AdminAssignRoleResponse,
+  type AvailableOpenRole,
+  type AvailableRolesResponse,
+  type AdminAssignUserInput,
+} from './openRole.types.js';
+

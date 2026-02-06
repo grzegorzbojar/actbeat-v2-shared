@@ -58,6 +58,14 @@ export interface CrewRoleDefinition {
    * Optional roles are not required during scheduling.
    */
   isOptional?: boolean;
+
+  /**
+   * Whether this role allows self-signup via Open Roles.
+   * When true, events created with this play will automatically
+   * include this role as an open role that users can sign up for.
+   * Requires Open Roles feature to be enabled in organization settings.
+   */
+  allowSelfSignup?: boolean;
 }
 
 /**

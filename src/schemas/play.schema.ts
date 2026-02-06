@@ -27,6 +27,7 @@ export const crewRoleDefinitionSchema = z
     userTagId: z.string().optional(),
     assignedUserIds: z.array(z.string()).optional(),
     isOptional: z.boolean().optional(),
+    allowSelfSignup: z.boolean().optional(),
   })
   .refine(
     (data) => {

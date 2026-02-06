@@ -257,3 +257,22 @@ export {
   type ObjectActivitiesParamsSchemaInput,
   type ObjectActivitiesParamsSchemaOutput,
 } from './activity.schema.js';
+
+// Open Role schemas
+export {
+  createOpenRoleSchema,
+  updateOpenRoleSchema,
+  adminAssignUserSchema,
+  openRoleParamsSchema,
+  signupParamsSchema,
+  type CreateOpenRoleSchemaInput,
+  type CreateOpenRoleSchemaOutput,
+  type UpdateOpenRoleSchemaInput,
+  type UpdateOpenRoleSchemaOutput,
+  type AdminAssignUserSchemaInput,
+  type AdminAssignUserSchemaOutput,
+  type OpenRoleParamsSchemaInput,
+  type OpenRoleParamsSchemaOutput,
+  type SignupParamsSchemaInput,
+  type SignupParamsSchemaOutput,
+} from './openRole.schema.js';
