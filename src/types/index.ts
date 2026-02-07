@@ -281,3 +281,15 @@ export {
   type AdminAssignUserInput,
 } from './openRole.types.js';
 
+// Notification types
+export {
+  NotificationType,
+  NotificationPreferenceGroup,
+  type NotificationGroupPreference,
+  type NotificationPreferences,
+  type Notification,
+  type NotificationResponse,
+  type CreateNotificationInput,
+  type NotificationQueryParams,
+  type NotificationsListResponse,
+} from './notification.types.js';

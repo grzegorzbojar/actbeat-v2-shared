@@ -4,6 +4,8 @@
  * @module types/userPreferences
  */
 
+import type { NotificationPreferences } from './notification.types.js';
+
 /**
  * User preferences entity from the database.
  * Stores user-specific configuration and settings.
@@ -21,6 +23,12 @@ export interface UserPreferences {
   onboardingCompleted: boolean;
   /** Whether the user has completed the guided tour */
   tourCompleted: boolean;
+  /** User's notification delivery preferences per group */
+  notificationPreferences: NotificationPreferences | null;
+  /** Whether daily email digest is enabled */
+  emailDigestEnabled: boolean;
+  /** Time of day for email digest delivery (HH:mm format) */
+  emailDigestTime: string;
   /** When the preferences record was created */
   createdAt: Date;
   /** When the preferences were last updated */
@@ -44,6 +52,12 @@ export interface UserPreferencesResponse {
   onboardingCompleted: boolean;
   /** Whether the user has completed the guided tour */
   tourCompleted: boolean;
+  /** User's notification delivery preferences per group */
+  notificationPreferences: NotificationPreferences | null;
+  /** Whether daily email digest is enabled */
+  emailDigestEnabled: boolean;
+  /** Time of day for email digest delivery (HH:mm format) */
+  emailDigestTime: string;
   /** When the preferences record was created (ISO string) */
   createdAt: string;
   /** When the preferences were last updated (ISO string) */
@@ -61,6 +75,12 @@ export interface UpdateUserPreferencesInput {
   onboardingCompleted?: boolean;
   /** Mark guided tour as completed */
   tourCompleted?: boolean;
+  /** Update notification delivery preferences */
+  notificationPreferences?: NotificationPreferences | null;
+  /** Enable or disable daily email digest */
+  emailDigestEnabled?: boolean;
+  /** Time of day for email digest delivery (HH:mm format) */
+  emailDigestTime?: string;
 }
 
 /**

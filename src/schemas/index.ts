@@ -276,3 +276,19 @@ export {
   type SignupParamsSchemaInput,
   type SignupParamsSchemaOutput,
 } from './openRole.schema.js';
+
+// Notification schemas
+export {
+  notificationTypeSchema,
+  notificationPreferenceGroupSchema,
+  notificationGroupPreferenceSchema,
+  notificationPreferencesSchema,
+  notificationQuerySchema,
+  markNotificationsReadSchema,
+  type NotificationQuerySchemaInput,
+  type NotificationQuerySchemaOutput,
+  type NotificationPreferencesSchemaInput,
+  type NotificationPreferencesSchemaOutput,
+  type MarkNotificationsReadSchemaInput,
+  type MarkNotificationsReadSchemaOutput,
+} from './notification.schema.js';

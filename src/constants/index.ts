@@ -35,3 +35,13 @@ export {
   getCategoryTextColor,
   type CategoryInfo,
 } from './categories.js';
+
+// Notifications
+export {
+  GROUP_NOTIFICATION_TYPES,
+  DEFAULT_GROUP_PREFERENCE,
+  DEFAULT_NOTIFICATION_PREFERENCES,
+  ALL_NOTIFICATION_GROUPS,
+  getGroupForNotificationType,
+  getNotificationTypesForGroup,
+} from './notifications.js';

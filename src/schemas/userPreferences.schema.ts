@@ -4,6 +4,7 @@
  */
 
 import { z } from 'zod';
+import { notificationPreferencesSchema } from './notification.schema.js';
 
 /**
  * Schema for updating user preferences.
@@ -23,6 +24,12 @@ export const updateUserPreferencesSchema = z.object({
   onboardingCompleted: z.boolean().optional(),
   /** Mark guided tour as completed */
   tourCompleted: z.boolean().optional(),
+  /** Update notification delivery preferences */
+  notificationPreferences: notificationPreferencesSchema.nullable().optional(),
+  /** Enable or disable daily email digest */
+  emailDigestEnabled: z.boolean().optional(),
+  /** Time of day for email digest delivery (HH:mm format) */
+  emailDigestTime: z.string().regex(/^\d{2}:\d{2}$/, 'Must be HH:mm format').optional(),
 });
 
 /**
