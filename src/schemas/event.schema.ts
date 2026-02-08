@@ -98,6 +98,13 @@ export const trialEventMetadataSchema = z.object({
 });
 
 /**
+ * Other event metadata schema (for OTHER category events).
+ */
+export const otherEventMetadataSchema = z.object({
+  invitees: z.array(z.string()).optional(),
+});
+
+/**
  * Rehearsal actor assignment schema.
  */
 export const rehearsalActorAssignmentSchema = z.object({
@@ -130,9 +137,9 @@ export const rehearsalEventMetadataSchema = z.object({
  * Generic event metadata schema.
  */
 export const eventMetadataSchema = z.union([
-  playEventMetadataSchema,
-  rehearsalEventMetadataSchema,
-  trialEventMetadataSchema,
+  playEventMetadataSchema.strict(),
+  rehearsalEventMetadataSchema.strict(),
+  trialEventMetadataSchema.strict(),
   z.record(z.unknown()),
 ]);
 

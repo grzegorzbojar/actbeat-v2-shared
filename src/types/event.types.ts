@@ -174,6 +174,15 @@ export interface TrialEventMetadata {
 }
 
 /**
+ * Event metadata for OTHER category events.
+ * Stores miscellaneous event information.
+ */
+export interface OtherEventMetadata {
+  /** User IDs of invitees */
+  invitees?: string[];
+}
+
+/**
  * Actor assignment for rehearsal events.
  * Multiple actors can be assigned to a single character in rehearsals.
  */
@@ -224,7 +233,7 @@ export interface RehearsalEventMetadata {
 /**
  * Union type for event metadata based on category.
  */
-export type EventMetadata = PlayEventMetadata | RehearsalEventMetadata | TrialEventMetadata | Record<string, unknown>;
+export type EventMetadata = PlayEventMetadata | RehearsalEventMetadata | TrialEventMetadata | OtherEventMetadata | Record<string, unknown>;
 
 /**
  * Core Event entity matching the Prisma Event model.

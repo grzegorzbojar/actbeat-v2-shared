@@ -4,6 +4,24 @@
  * @module types/notification
  */
 
+import type { EventCategory } from './event.types.js';
+
+/** Structured payload for event-related notifications. */
+export interface EventNotificationPayload {
+  /** Event category for icon rendering */
+  eventCategory: EventCategory;
+  /** Resolved event color (play color > event color > null) */
+  eventColor: string | null;
+  /** Organization logo URL from Clerk */
+  orgImageUrl: string | null;
+}
+
+/** Structured payload for healthcheck notifications. */
+export interface HealthcheckNotificationPayload extends EventNotificationPayload {
+  /** Healthcheck result summary */
+  summary: { errors: number; warnings: number; info: number };
+}
+
 /**
  * Notification type enumeration matching Prisma schema.
  * Defines the types of notifications that can be sent to users.

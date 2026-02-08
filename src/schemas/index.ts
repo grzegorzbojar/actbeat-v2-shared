@@ -19,6 +19,7 @@ export {
   rehearsalCharacterAssignmentSchema,
   rehearsalEventMetadataSchema,
   trialEventMetadataSchema,
+  otherEventMetadataSchema,
   eventMetadataSchema,
   createEventSchema,
   updateEventSchema,

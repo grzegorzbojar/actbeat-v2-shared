@@ -4,7 +4,7 @@
  */
 
 import { z } from 'zod';
-import { eventStatusSchema, playEventMetadataSchema, rehearsalEventMetadataSchema } from './event.schema.js';
+import { eventStatusSchema, playEventMetadataSchema, rehearsalEventMetadataSchema, trialEventMetadataSchema, otherEventMetadataSchema } from './event.schema.js';
 import { hexColorSchema } from './common.schema.js';
 import { EventStatus } from '../types/event.types.js';
 
@@ -14,11 +14,13 @@ import { EventStatus } from '../types/event.types.js';
 export const orgEventCategorySchema = z.enum(['PLAY', 'REHEARSAL', 'TRIAL', 'TECHNICAL', 'OTHER']);
 
 /**
- * Combined metadata schema for org events (PLAY or REHEARSAL).
+ * Combined metadata schema for org events.
  */
 export const orgEventMetadataSchema = z.union([
-  playEventMetadataSchema,
-  rehearsalEventMetadataSchema,
+  playEventMetadataSchema.strict(),
+  rehearsalEventMetadataSchema.strict(),
+  trialEventMetadataSchema.strict(),
+  otherEventMetadataSchema.strict(),
 ]);
 
 /**

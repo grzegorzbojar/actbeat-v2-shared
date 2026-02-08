@@ -26,6 +26,7 @@ export {
   type RehearsalCharacterAssignment,
   type RehearsalActorAssignment,
   type TrialEventMetadata,
+  type OtherEventMetadata,
   type ExternalPerson,
   type CharacterAssignment,
   type CrewAssignment,
@@ -292,4 +293,6 @@ export {
   type CreateNotificationInput,
   type NotificationQueryParams,
   type NotificationsListResponse,
+  type EventNotificationPayload,
+  type HealthcheckNotificationPayload,
 } from './notification.types.js';
