@@ -25,6 +25,8 @@ export const bulkPublishSchema = z.object({
   skipHealthcheck: z.boolean().optional().default(false),
   /** Admin notes for overriding warnings */
   adminNotes: z.string().optional(),
+  /** Source of the bulk publish (for notification grouping) */
+  source: z.enum(['scheduler', 'calendar']).optional(),
 });
 
 /**

@@ -178,6 +178,7 @@ export {
 
 // User preferences types
 export {
+  type EmailDeliveryMode,
   type UserPreferences,
   type UserPreferencesResponse,
   type UpdateUserPreferencesInput,

@@ -30,6 +30,10 @@ export const updateUserPreferencesSchema = z.object({
   emailDigestEnabled: z.boolean().optional(),
   /** Time of day for email digest delivery (HH:mm format) */
   emailDigestTime: z.string().regex(/^\d{2}:\d{2}$/, 'Must be HH:mm format').optional(),
+  /** Email delivery mode */
+  emailDeliveryMode: z.enum(['immediate', 'smart_grouped']).optional(),
+  /** User's IANA timezone (e.g. 'Europe/Warsaw') */
+  timezone: z.string().min(1).max(50).optional(),
 });
 
 /**

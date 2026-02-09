@@ -7,6 +7,13 @@
 import type { NotificationPreferences } from './notification.types.js';
 
 /**
+ * Email delivery mode for notifications.
+ * - 'immediate': Send one email per notification as it occurs
+ * - 'smart_grouped': Batch emails for bulk operations + daily digest
+ */
+export type EmailDeliveryMode = 'immediate' | 'smart_grouped';
+
+/**
  * User preferences entity from the database.
  * Stores user-specific configuration and settings.
  */
@@ -29,6 +36,10 @@ export interface UserPreferences {
   emailDigestEnabled: boolean;
   /** Time of day for email digest delivery (HH:mm format) */
   emailDigestTime: string;
+  /** Email delivery mode: immediate or smart_grouped */
+  emailDeliveryMode: EmailDeliveryMode;
+  /** User's IANA timezone (e.g. 'Europe/Warsaw') */
+  timezone: string;
   /** When the preferences record was created */
   createdAt: Date;
   /** When the preferences were last updated */
@@ -58,6 +69,10 @@ export interface UserPreferencesResponse {
   emailDigestEnabled: boolean;
   /** Time of day for email digest delivery (HH:mm format) */
   emailDigestTime: string;
+  /** Email delivery mode: immediate or smart_grouped */
+  emailDeliveryMode: EmailDeliveryMode;
+  /** User's IANA timezone (e.g. 'Europe/Warsaw') */
+  timezone: string;
   /** When the preferences record was created (ISO string) */
   createdAt: string;
   /** When the preferences were last updated (ISO string) */
@@ -81,6 +96,10 @@ export interface UpdateUserPreferencesInput {
   emailDigestEnabled?: boolean;
   /** Time of day for email digest delivery (HH:mm format) */
   emailDigestTime?: string;
+  /** Email delivery mode: immediate or smart_grouped */
+  emailDeliveryMode?: EmailDeliveryMode;
+  /** User's IANA timezone (e.g. 'Europe/Warsaw') */
+  timezone?: string;
 }
 
 /**
