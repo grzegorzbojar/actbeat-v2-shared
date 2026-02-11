@@ -231,6 +231,22 @@ export interface RehearsalEventMetadata {
 }
 
 /**
+ * Specification for auto-creating an EventOpenRole when an event is created.
+ * Used to automatically create open shift roles from crew role definitions
+ * that have allowSelfSignup enabled.
+ */
+export interface AutoOpenRoleSpec {
+  /** ID of the crew role definition from the play */
+  roleDefinitionId: string;
+  /** Human-readable role name */
+  roleName: string;
+  /** Number of people needed for this role */
+  slotsNeeded: number;
+  /** IDs of required user tags for eligibility */
+  requiredTagIds: string[];
+}
+
+/**
  * Union type for event metadata based on category.
  */
 export type EventMetadata = PlayEventMetadata | RehearsalEventMetadata | TrialEventMetadata | OtherEventMetadata | Record<string, unknown>;

@@ -176,6 +176,7 @@ export {
 // Organization event schemas
 export {
   orgEventCategorySchema,
+  autoOpenRoleSpecSchema,
   createOrgEventSchema,
   updateOrgEventSchema,
   listOrgEventsQuerySchema,

@@ -24,6 +24,16 @@ export const orgEventMetadataSchema = z.union([
 ]);
 
 /**
+ * Schema for auto-creating an EventOpenRole when an event is created.
+ */
+export const autoOpenRoleSpecSchema = z.object({
+  roleDefinitionId: z.string().min(1),
+  roleName: z.string().min(1).max(100),
+  slotsNeeded: z.number().int().min(1).max(99),
+  requiredTagIds: z.array(z.string()).min(1),
+});
+
+/**
  * Schema for creating an organization event.
  * Follows architecture: POST /api/events
  */
@@ -42,6 +52,7 @@ export const createOrgEventSchema = z
     tagIds: z.array(z.string()).default([]),
     adminNotes: z.string().max(2000).nullish(),
     minimumNoticePeriod: z.number().int().min(0).nullish(),
+    autoOpenRoles: z.array(autoOpenRoleSpecSchema).optional().default([]),
   })
   .refine((data) => data.endDate > data.startDate, {
     message: 'End date must be after start date',

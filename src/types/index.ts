@@ -44,6 +44,7 @@ export {
   type AvailabilityBlock,
   type AvailabilityCheckResult,
   type BulkAvailabilityResult,
+  type AutoOpenRoleSpec,
   type PublishEventResponse,
   type UnpublishEventResponse,
   type RespondToInvitationResponse,
