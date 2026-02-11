@@ -27,6 +27,7 @@ export const GROUP_NOTIFICATION_TYPES: Record<NotificationPreferenceGroup, reado
   [NotificationPreferenceGroup.EVENTS_SCHEDULING]: [
     NotificationType.EVENT_PUBLISHED,
     NotificationType.EVENT_CANCELLED,
+    NotificationType.EVENT_DELETED,
     NotificationType.EVENT_CONFLICT_WARNING,
   ],
   [NotificationPreferenceGroup.ROLES_CASTING]: [

@@ -31,6 +31,8 @@ export enum NotificationType {
   EVENT_PUBLISHED = 'EVENT_PUBLISHED',
   /** An event has been cancelled */
   EVENT_CANCELLED = 'EVENT_CANCELLED',
+  /** An event has been deleted by an admin */
+  EVENT_DELETED = 'EVENT_DELETED',
   /** An open role is available for signup */
   OPEN_ROLE_AVAILABLE = 'OPEN_ROLE_AVAILABLE',
   /** A user has been assigned to an open role */
