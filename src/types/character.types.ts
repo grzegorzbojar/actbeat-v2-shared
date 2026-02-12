@@ -50,8 +50,8 @@ export interface CreateCharacterInput {
   name: string;
   /** ID of the play this character belongs to */
   playId: string;
-  /** Array of user IDs who can play this character */
-  actors?: string[];
+  /** Array of user IDs who can play this character (at least one required) */
+  actors: string[];
   /** Array of scene IDs this character appears in */
   sceneIds?: string[];
   /** Array of tag IDs to associate */

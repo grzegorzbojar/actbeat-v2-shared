@@ -11,7 +11,7 @@ import { z } from 'zod';
 export const createCharacterSchema = z.object({
   name: z.string().min(1, 'Name is required').max(255, 'Name is too long'),
   playId: z.string().min(1, 'Play ID is required'),
-  actors: z.array(z.string()).default([]),
+  actors: z.array(z.string()).min(1, 'At least one actor is required'),
   sceneIds: z.array(z.string()).default([]),
   tagIds: z.array(z.string()).default([]),
 });
@@ -21,7 +21,7 @@ export const createCharacterSchema = z.object({
  */
 export const updateCharacterSchema = z.object({
   name: z.string().min(1).max(255).optional(),
-  actors: z.array(z.string()).optional(),
+  actors: z.array(z.string()).min(1).optional(),
   sceneIds: z.array(z.string()).optional(),
   tagIds: z.array(z.string()).optional(),
 });
