@@ -126,3 +126,20 @@ export const PARTICIPANT_TO_GOOGLE_STATUS: Record<ParticipantStatus, GoogleRespo
   ACCEPTED: 'accepted',
   DECLINED: 'declined',
 };
+
+// =============================================================================
+// Calendar Import Sync Types
+// =============================================================================
+
+/**
+ * Result of syncing a single Google Calendar event to Actbeat.
+ * Used by the import sync flow to determine if auto-accept should be triggered.
+ */
+export interface SyncEventResult {
+  /** Whether the event was successfully created or updated in Actbeat */
+  synced: boolean;
+  /** The Google Calendar event ID (needed for auto-accept API call) */
+  googleEventId?: string;
+  /** Whether kalendarz@actbeat.app is an attendee (not the organizer) - i.e. an incoming invitation */
+  isInvitation?: boolean;
+}

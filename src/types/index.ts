@@ -207,6 +207,7 @@ export {
   type CalendarSyncState,
   type CalendarSyncStateResponse,
   type GoogleResponseStatus,
+  type SyncEventResult,
   GOOGLE_TO_PARTICIPANT_STATUS,
   PARTICIPANT_TO_GOOGLE_STATUS,
 } from './googleCalendar.types.js';
@@ -283,6 +284,11 @@ export {
   type AvailableRolesResponse,
   type AdminAssignUserInput,
 } from './openRole.types.js';
+
+// Inbound email types
+export {
+  type IcsEmailEventMetadata,
+} from './inboundEmail.types.js';
 
 // Notification types
 export {
