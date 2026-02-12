@@ -9,7 +9,7 @@ import type { EventCategory, EventStatus, ParticipantStatus } from './event.type
 /**
  * Source of a calendar event.
  */
-export type CalendarEventSource = 'PRIVATE' | 'ORG' | 'GOOGLE' | 'PROPOSED';
+export type CalendarEventSource = 'PRIVATE' | 'ORG' | 'GOOGLE' | 'ICS' | 'PROPOSED';
 
 /**
  * Summary of participant statuses for an event.
