@@ -294,6 +294,8 @@ export interface Event {
   healthcheckResult: HealthcheckResult | null;
   /** Timestamp of the last healthcheck run */
   healthcheckAt: Date | null;
+  /** Whether healthcheck notifications are suppressed for this event */
+  healthcheckSuppressed: boolean;
   /** Google Calendar event ID */
   googleEventId: string | null;
   /** Google Calendar ID */
@@ -513,6 +515,8 @@ export interface EventResponse {
   healthcheckResult: HealthcheckResult | null;
   /** Timestamp of the last healthcheck run as ISO string */
   healthcheckAt: string | null;
+  /** Whether healthcheck notifications are suppressed for this event */
+  healthcheckSuppressed: boolean;
   /** Google Calendar event ID */
   googleEventId: string | null;
   /** Google Calendar ID */

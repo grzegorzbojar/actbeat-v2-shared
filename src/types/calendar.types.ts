@@ -81,6 +81,8 @@ export interface CalendarEvent {
   status?: EventStatus;
   /** Healthcheck status for visual indicator */
   healthcheckStatus?: 'error' | 'warning' | 'clean' | null;
+  /** Whether healthcheck notifications are suppressed */
+  healthcheckSuppressed?: boolean;
 
   // Proposed event properties (from scheduler)
   /** Whether this is a proposed event from scheduler (for border styling) */
