@@ -288,6 +288,7 @@ export {
 // Inbound email types
 export {
   type IcsEmailEventMetadata,
+  type AiEmailEventMetadata,
 } from './inboundEmail.types.js';
 
 // Notification types

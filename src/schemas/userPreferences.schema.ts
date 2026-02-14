@@ -20,6 +20,8 @@ import { notificationPreferencesSchema } from './notification.schema.js';
 export const updateUserPreferencesSchema = z.object({
   /** Enable or disable Google Calendar sync */
   googleCalendarEnabled: z.boolean().optional(),
+  /** Enable or disable AI email processing (Sufler) */
+  aiEmailProcessingEnabled: z.boolean().optional(),
   /** Mark onboarding wizard as completed */
   onboardingCompleted: z.boolean().optional(),
   /** Mark guided tour as completed */

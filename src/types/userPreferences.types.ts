@@ -26,6 +26,8 @@ export interface UserPreferences {
   email: string;
   /** Whether Google Calendar sync is enabled for this user */
   googleCalendarEnabled: boolean;
+  /** Whether AI email processing (Sufler) is enabled for this user */
+  aiEmailProcessingEnabled: boolean;
   /** Whether the user has completed the onboarding wizard */
   onboardingCompleted: boolean;
   /** Whether the user has completed the guided tour */
@@ -59,6 +61,8 @@ export interface UserPreferencesResponse {
   email: string;
   /** Whether Google Calendar sync is enabled for this user */
   googleCalendarEnabled: boolean;
+  /** Whether AI email processing (Sufler) is enabled for this user */
+  aiEmailProcessingEnabled: boolean;
   /** Whether the user has completed the onboarding wizard */
   onboardingCompleted: boolean;
   /** Whether the user has completed the guided tour */
@@ -86,6 +90,8 @@ export interface UserPreferencesResponse {
 export interface UpdateUserPreferencesInput {
   /** Enable or disable Google Calendar sync */
   googleCalendarEnabled?: boolean;
+  /** Enable or disable AI email processing (Sufler) */
+  aiEmailProcessingEnabled?: boolean;
   /** Mark onboarding wizard as completed */
   onboardingCompleted?: boolean;
   /** Mark guided tour as completed */
