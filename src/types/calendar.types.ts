@@ -5,6 +5,7 @@
  */
 
 import type { EventCategory, EventStatus, ParticipantStatus } from './event.types.js';
+import type { CrewRoleDefinition } from './play.types.js';
 
 /**
  * Source of a calendar event.
@@ -93,4 +94,81 @@ export interface CalendarEvent {
   playDuration?: number | null;
   /** Border color for proposed events (from play color) */
   proposedBorderColor?: string;
+}
+
+// ── Play Monthly Calendar types ──────────────────────────────────
+
+/**
+ * A single event shown on the play monthly calendar grid.
+ */
+export interface PlayCalendarEvent {
+  id: string;
+  title: string;
+  startDate: string;
+  endDate: string;
+  category: string;
+  color: string | null;
+  status: string | null;
+  isPrivate: boolean;
+}
+
+/**
+ * An actor (user) row in the play monthly calendar.
+ */
+export interface PlayCalendarActor {
+  userId: string;
+  firstName: string | null;
+  lastName: string | null;
+  avatarUrl: string | null;
+  events: PlayCalendarEvent[];
+}
+
+/**
+ * A character grouping with its assigned actors for the play calendar.
+ */
+export interface PlayCalendarCharacter {
+  id: string;
+  name: string;
+  actors: PlayCalendarActor[];
+}
+
+/**
+ * A crew role with its eligible users for the play calendar.
+ */
+export interface PlayCalendarCrewRole {
+  roleDefinitionId: string;
+  roleName: string;
+  roleColor: string;
+  requiredCount: number;
+  isOptional: boolean;
+  users: PlayCalendarActor[];
+}
+
+/**
+ * Location row data for the play calendar.
+ */
+export interface PlayCalendarLocation {
+  locationId: string;
+  locationName: string;
+  events: PlayCalendarEvent[];
+}
+
+/**
+ * Response from GET /api/plays/:playId/calendar
+ */
+export interface PlayCalendarResponse {
+  play: {
+    id: string;
+    name: string;
+    color: string | null;
+    duration: number;
+    defaultLocationId: string | null;
+    defaultLocationName: string | null;
+    crewRoles: CrewRoleDefinition[] | null;
+  };
+  characters: PlayCalendarCharacter[];
+  crewRoles: PlayCalendarCrewRole[] | null;
+  location: PlayCalendarLocation | null;
+  month: string;
+  daysInMonth: number;
 }

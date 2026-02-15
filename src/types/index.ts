@@ -255,6 +255,12 @@ export {
   type CalendarEventSource,
   type ParticipantSummary,
   type CalendarEvent,
+  type PlayCalendarEvent,
+  type PlayCalendarActor,
+  type PlayCalendarCharacter,
+  type PlayCalendarCrewRole,
+  type PlayCalendarLocation,
+  type PlayCalendarResponse,
 } from './calendar.types.js';
 
 // Statistics types
