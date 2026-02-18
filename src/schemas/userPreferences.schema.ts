@@ -34,6 +34,8 @@ export const updateUserPreferencesSchema = z.object({
   emailDeliveryMode: z.enum(['immediate', 'smart_grouped']).optional(),
   /** User's IANA timezone (e.g. 'Europe/Warsaw') */
   timezone: z.string().min(1).max(50).optional(),
+  /** Clerk org ID granted agency rights over user's calendar, null to revoke */
+  calendarAgencyOrgId: z.string().nullable().optional(),
 });
 
 /**

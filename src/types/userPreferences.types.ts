@@ -40,6 +40,8 @@ export interface UserPreferences {
   emailDeliveryMode: EmailDeliveryMode;
   /** User's IANA timezone (e.g. 'Europe/Warsaw') */
   timezone: string;
+  /** Clerk org ID granted agency rights over user's calendar */
+  calendarAgencyOrgId: string | null;
   /** When the preferences record was created */
   createdAt: Date;
   /** When the preferences were last updated */
@@ -73,6 +75,8 @@ export interface UserPreferencesResponse {
   emailDeliveryMode: EmailDeliveryMode;
   /** User's IANA timezone (e.g. 'Europe/Warsaw') */
   timezone: string;
+  /** Clerk org ID granted agency rights over user's calendar */
+  calendarAgencyOrgId: string | null;
   /** When the preferences record was created (ISO string) */
   createdAt: string;
   /** When the preferences were last updated (ISO string) */
@@ -100,6 +104,8 @@ export interface UpdateUserPreferencesInput {
   emailDeliveryMode?: EmailDeliveryMode;
   /** User's IANA timezone (e.g. 'Europe/Warsaw') */
   timezone?: string;
+  /** Clerk org ID granted agency rights over user's calendar, null to revoke */
+  calendarAgencyOrgId?: string | null;
 }
 
 /**
