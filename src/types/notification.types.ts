@@ -14,6 +14,8 @@ export interface EventNotificationPayload {
   eventColor: string | null;
   /** Organization logo URL from Clerk */
   orgImageUrl: string | null;
+  /** True when user was auto-accepted via calendar agency (no action needed) */
+  autoAccepted?: boolean;
 }
 
 /** Structured payload for healthcheck notifications. */
