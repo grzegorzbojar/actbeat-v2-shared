@@ -29,6 +29,10 @@ export const GROUP_NOTIFICATION_TYPES: Record<NotificationPreferenceGroup, reado
     NotificationType.EVENT_CANCELLED,
     NotificationType.EVENT_DELETED,
     NotificationType.EVENT_CONFLICT_WARNING,
+    NotificationType.EVENT_UPDATED,
+    NotificationType.EVENT_LOCATION_SET,
+    NotificationType.EVENT_INVITATION,
+    NotificationType.EVENT_REMOVED,
   ],
   [NotificationPreferenceGroup.ROLES_CASTING]: [
     NotificationType.OPEN_ROLE_AVAILABLE,
