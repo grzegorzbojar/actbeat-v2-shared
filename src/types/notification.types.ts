@@ -49,6 +49,14 @@ export enum NotificationType {
   HEALTHCHECK_ISSUES = 'HEALTHCHECK_ISSUES',
   /** A scheduling conflict has been detected for an event */
   EVENT_CONFLICT_WARNING = 'EVENT_CONFLICT_WARNING',
+  /** A published event has been updated with significant changes (time, location swap) */
+  EVENT_UPDATED = 'EVENT_UPDATED',
+  /** A location has been set for the first time on a published event */
+  EVENT_LOCATION_SET = 'EVENT_LOCATION_SET',
+  /** A participant has been added to a published event */
+  EVENT_INVITATION = 'EVENT_INVITATION',
+  /** A participant has been removed from a published event */
+  EVENT_REMOVED = 'EVENT_REMOVED',
 }
 
 /**
